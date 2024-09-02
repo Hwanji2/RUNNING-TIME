@@ -76,7 +76,16 @@ public class CameraFollow : MonoBehaviour
         {
             StartCoroutine(ChangeFollowOffsetTemporarily());
         }
+
+        // 아무 키나 눌렀을 때 isFollowing을 true로 설정하고 followOffset 변경
+        if (Input.anyKeyDown)
+        {
+            isFollowing = true;
+            followOffsets[0] = followOffsets[Random.Range(0, followOffsets.Length)]; // 랜덤한 followOffset으로 변경
+        }
     }
+
+        
 
     // followOffsets 배열을 수정하는 메서드
     public void SetFollowOffset(int index, Vector2 newOffset)

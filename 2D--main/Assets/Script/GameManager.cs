@@ -48,9 +48,11 @@ public class GameManager : MonoBehaviour
         // Get the AudioSource component
         bgMusic = GetComponent<AudioSource>();
 
+        // Set the volume (0.0 to 1.0)
+        bgMusic.volume = 0.8f; // Adjust the volume level as needed
+
         // 3초 후에 음악 재생
         Invoke("PlayMusic", 7f);
-
     }
 
     private void PlayMusic()
