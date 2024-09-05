@@ -118,7 +118,6 @@ public class PlayerMove : MonoBehaviour
     }
 
       
-
         if (Input.GetButtonUp("Sliding") && anim.GetBool("isSliding"))
         {
             anim.SetBool("isSliding", false);
@@ -210,7 +209,7 @@ public class PlayerMove : MonoBehaviour
         }
         if (Input.GetButtonDown("RUN"))
         {
-            if (isjump && Input.GetButtonDown("RUN"))
+            if (isjump)
             {
                 accel = accel + 10;
             }

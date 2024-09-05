@@ -23,6 +23,12 @@ public class CameraFollow : MonoBehaviour
         // 초기 위치 전 초기 위치로 설정
         transform.position = preInitialCameraPosition;
         isFollowing = false;
+        // 아무 키나 눌렀을 때 isFollowing을 true로 설정하고 followOffset 변경
+        if (Input.anyKeyDown)
+        {
+            isFollowing = true;
+            followOffsets[0] = followOffsets[Random.Range(0, followOffsets.Length)]; // 랜덤한 followOffset으로 변경
+        }
     }
 
     void LateUpdate()
@@ -70,19 +76,19 @@ public class CameraFollow : MonoBehaviour
                 }
             }
         }
-
-        // 스페이스 키를 눌렀을 때 오프셋 변경
-        if (Input.GetKeyDown(KeyCode.Space) && !isOffsetChanging)
-        {
-            StartCoroutine(ChangeFollowOffsetTemporarily());
-        }
-
         // 아무 키나 눌렀을 때 isFollowing을 true로 설정하고 followOffset 변경
         if (Input.anyKeyDown)
         {
             isFollowing = true;
             followOffsets[0] = followOffsets[Random.Range(0, followOffsets.Length)]; // 랜덤한 followOffset으로 변경
         }
+        // 스페이스 키를 눌렀을 때 오프셋 변경
+        if (Input.GetKeyDown(KeyCode.Space) && !isOffsetChanging)
+        {
+            StartCoroutine(ChangeFollowOffsetTemporarily());
+        }
+
+       
     }
 
         

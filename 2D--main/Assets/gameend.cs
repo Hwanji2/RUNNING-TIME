@@ -115,7 +115,7 @@ public class GameOverManager : MonoBehaviour
             else
             {
                 // 씬 전환 전에 오디오 클립 재생
-                StartCoroutine(PlayTransitionClipAndLoadScene("Main"));
+                StartCoroutine(PlayTransitionClipAndLoadScene("Title"));
             }
             
         }

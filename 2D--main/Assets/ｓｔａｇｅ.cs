@@ -6,7 +6,8 @@ public class TriggerAnimationAndSceneChange : MonoBehaviour
 {
     public Animator animator; // 애니메이터 컴포넌트
     public string animationTriggerName; // 애니메이션 트리거 이름
-    public string ENDING; // 전환할 씬 이름
+    public string ENDING; // 전환할 기본 씬 이름
+    public string score2; // 전환할 다른 씬 이름
     public AudioClip doorSound; // 문 소리 클립
     private AudioSource audioSource; // 오디오 소스
 
@@ -54,7 +55,15 @@ public class TriggerAnimationAndSceneChange : MonoBehaviour
             PlayerPrefs.SetInt("SecretCount", gameManager.player.secretCount);
         }
 
-        // 씬 전환
-        SceneManager.LoadScene(ENDING); // 수정된 부분
+        // 현재 씬 이름에 따라 씬 전환
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (currentSceneName == "Main")
+        {
+            SceneManager.LoadScene(ENDING);
+        }
+        else if (currentSceneName == "Main 1")
+        {
+            SceneManager.LoadScene(score2);
+        }
     }
 }

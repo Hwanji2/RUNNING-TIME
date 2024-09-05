@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LAST.unity
     guid: 5aaeb5a0b1bc80f47ba3868a986ef8a1
+  - enabled: 1
+    path: Assets/Scenes/Main 1.unity
+    guid: 2637ab887a9588f4298cc9c850f2e3af
+  - enabled: 1
+    path: Assets/Scenes/newscore.unity
+    guid: 38dedd3f21d1d9d4b9b8d3fea5da611e
   m_configObjects: {}

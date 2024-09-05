@@ -238,14 +238,14 @@ RectTransform:
   m_GameObject: {fileID: 430994820}
   m_LocalRotation: {x: -0, y: -0, z: 0.010890261, w: 0.9999407}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20000002, y: 0.20000002, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 694957864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.248}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 9.549357, y: -20.29847}
+  m_AnchoredPosition: {x: 9.549357, y: -21.9}
   m_SizeDelta: {x: 59.38879, y: 26.95544}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &430994822
@@ -278,8 +278,8 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 3:00:00
 --- !u!222 &430994823
@@ -357,8 +357,8 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 1
 --- !u!222 &559892122
@@ -928,14 +928,14 @@ RectTransform:
   m_GameObject: {fileID: 1044720442}
   m_LocalRotation: {x: -0, y: -0, z: 0.022371942, w: 0.9997498}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20000002, y: 0.20000002, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 694957864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2.564}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 40.4, y: -28.2}
+  m_AnchoredPosition: {x: 40.4, y: -29.4}
   m_SizeDelta: {x: 37.49995, y: 18.07175}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1044720444
@@ -968,8 +968,8 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 3
 --- !u!222 &1044720445
@@ -1075,14 +1075,14 @@ RectTransform:
   m_GameObject: {fileID: 1321701633}
   m_LocalRotation: {x: -0, y: -0, z: 0.022371942, w: 0.9997498}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20000002, y: 0.20000002, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 694957864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2.564}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 34.25, y: -28.36}
+  m_AnchoredPosition: {x: 34.25, y: -29.6}
   m_SizeDelta: {x: 37.49995, y: 18.07175}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1321701635
@@ -1115,8 +1115,8 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 0
 --- !u!222 &1321701636
@@ -1202,8 +1202,8 @@ MonoBehaviour:
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "\uC810\uC218\n"
 --- !u!1 &1590202125
@@ -1334,14 +1334,14 @@ RectTransform:
   m_GameObject: {fileID: 2060748710}
   m_LocalRotation: {x: -0, y: -0, z: 0.010890261, w: 0.9999407}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20000002, y: 0.20000002, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 694957864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.248}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 41.8, y: -19.7}
+  m_AnchoredPosition: {x: 33.2, y: -21.3}
   m_SizeDelta: {x: 59.38879, y: 26.95544}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2060748712
@@ -1382,8 +1382,8 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 3:00:00
 --- !u!1 &2139409368
@@ -1462,7 +1462,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
 --- !u!1660057539 &9223372036854775807
