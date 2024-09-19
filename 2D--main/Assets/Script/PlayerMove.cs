@@ -67,6 +67,28 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetButtonDown("RUN") || (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) ||
+    Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.H) ||
+    Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L) ||
+    Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C) ||
+    Input.GetKeyDown(KeyCode.V) || Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown(KeyCode.N) ||
+    Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.Period) ||
+    Input.GetKeyDown(KeyCode.Slash)))
+        {
+            if (isjump)
+            {
+                accel = accel + 10;
+            }
+            else
+            {
+                accel = accel + 1;
+            }
+        }
+        else
+        {
+            if (accel >= 1.1f && !anim.GetBool("isWalking") && !isjump && !isswap)
+                accel = accel - 1;
+        }
         // Jump
         if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumping"))
         {
@@ -207,7 +229,13 @@ public class PlayerMove : MonoBehaviour
             anim.SetBool("Run one", false);
 
         }
-        if (Input.GetButtonDown("RUN"))
+        if (Input.GetButtonDown("RUN")|| (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) ||
+    Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.H) ||
+    Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L) ||
+    Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C) ||
+    Input.GetKeyDown(KeyCode.V) || Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown(KeyCode.N) ||
+    Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.Period) ||
+    Input.GetKeyDown(KeyCode.Slash)))
         {
             if (isjump)
             {
@@ -304,6 +332,11 @@ public class PlayerMove : MonoBehaviour
             tuto2 = true;
             gameManager.NextStage();
         }
+        else if (collision.gameObject.tag == "what")
+        {
+            // 특정 좌표로 이동
+            transform.position = new Vector2(10f, 5f); // 원하는 좌표로 변경
+        }
     }
 
     private IEnumerator HandleItemCollision(Collider2D collision)
@@ -390,12 +423,23 @@ public class PlayerMove : MonoBehaviour
 
         // Animation
         isswap = true;
-        accel = 0 * dirc;
+        float direction = spriteRenderer.flipX ? -1f : 1f; // 플레이어의 방향 확인
+
+        // Rigidbody2D 컴포넌트 참조
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null&&!(accel==0))
+        {
+            rb.AddForce(new Vector2(-20f * direction, 10f), ForceMode2D.Impulse); // 방향에 따라 힘을 추가
+        }
+        else
+        {
+            Debug.LogError("Rigidbody2D component is missing!");
+        }
+
         anim.SetTrigger("doDamaged");
 
         Invoke("OffDamaged", 3);
     }
-
     public void OffDamaged()
     {
         gameObject.layer = 10;

@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (!isGameOver&&bgMusic.isPlaying)
+        if (((timer>10)&& (timer <= 5000) )||(!isGameOver&&bgMusic.isPlaying))
         {
 
             string sceneName = SceneManager.GetActiveScene().name;
@@ -105,9 +105,10 @@ public class GameManager : MonoBehaviour
                 timer -= Time.deltaTime * 1000; // 밀리초 단위로 감소
             }
 
-            if (timer <= 0 && sceneName != "Main 1")
+            if (timer <= 10 && sceneName != "Main 1")
             {
                 timer = 0;
+                UpdateTimerUI();
                 GameOver();
             }
 
@@ -185,10 +186,6 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0;
             Debug.Log("게임 클리어!");
-
-            Text btnText = RestartBtn.GetComponentInChildren<Text>();
-            btnText.text = "Clear!";
-            RestartBtn.SetActive(true);
         }
 
         totalPoint += stagePoint;
@@ -253,10 +250,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("게임 오버!");
 
         bgMusic.Stop();
-
-        Time.timeScale = 1;
-        a = player.secretCount;
-
         PlayerPrefs.SetInt("TotalPoint", totalPoint);
         PlayerPrefs.SetInt("MoneyPoint", moneyPoint);
         PlayerPrefs.SetInt("CoffeeCount", coffeeCount);
@@ -266,6 +259,10 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("SecretCount", player.secretCount);
 
         SceneManager.LoadScene("ENDING");
+        Time.timeScale = 1;
+        a = player.secretCount;
+
+        
     }
 
 // 금액 차감 함수 추가

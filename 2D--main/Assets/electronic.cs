@@ -10,6 +10,7 @@ public class ElectricWater : MonoBehaviour
     public AudioClip shockSound; // 감전 사운드 클립
     private AudioSource audioSource; // 오디오 소스
     public bool gamjeon = false;
+    public PlayerMove players;
 
     private void Start()
     {
@@ -46,7 +47,7 @@ public class ElectricWater : MonoBehaviour
                 // 감전 데미지 적용 (예시)
                 player.SendMessage("OnDamaged", Vector2.zero);
                 gamjeon = true;
-
+                players.accel = 0;
                 // 감전음 재생
                 if (audioSource != null && shockSound != null)
                 {
@@ -56,6 +57,7 @@ public class ElectricWater : MonoBehaviour
                 elapsedTime += shockInterval;
                 yield return new WaitForSeconds(shockInterval);
             }
+            players.accel = 1;
             gamjeon = false;
             playerRigidbody.gravityScale = 0.3f; // 물 속에서 중력 감소
         }

@@ -123,6 +123,7 @@ public class CombinedUI : MonoBehaviour
         }
         else
         {
+            if(playerMove.accel<=2)
             uiAnimator.SetBool("isWalking", false);
             walk = false;
         }

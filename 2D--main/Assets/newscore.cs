@@ -135,7 +135,15 @@ public class ScoreManager : MonoBehaviour
     void UpdateRecords(string name, int money, float time, int secret)
     {
         records.Add(new Record(name, money, time, secret));
-        records.Sort((a, b) => b.money.CompareTo(a.money) != 0 ? b.money.CompareTo(a.money) : b.time.CompareTo(a.time));
+        records.Sort((a, b) =>
+        {
+            int secretComparison = b.secret.CompareTo(a.secret);
+            if (secretComparison != 0)
+            {
+                return secretComparison;
+            }
+            return a.time.CompareTo(b.time);
+        });
         if (records.Count > maxRecords)
         {
             records.RemoveAt(records.Count - 1);
