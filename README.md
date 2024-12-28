@@ -71,8 +71,7 @@
 
 ## 📂 관련 자료
 
-- [GitHub Repository](https://github.com/Hwanji2/RUNNING-TIME--)
-- [YouTube 영상](https://youtube.com)
+- [YouTube Video](https://youtu.be/TIsIuyJ4QXg?feature=shared)
 
 ---
 
