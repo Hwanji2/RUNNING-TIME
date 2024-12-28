@@ -71,7 +71,7 @@
 
 ## 📂 관련 자료
 
-- [YouTube Video](https://youtu.be/TIsIuyJ4QXg?feature=shared)
+- [YouTube Video](https://youtube.com/playlist?list=PLomZ_XOg8FzyWHktkVx_JOgPjh0kqUS8Q&feature=shared)
 
 ---
 
