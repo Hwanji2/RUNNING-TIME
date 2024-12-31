@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: 659684390}
   - component: {fileID: 659684389}
   m_Layer: 5
-  m_Name: "\uAC80\uC740"
+  m_Name: Fade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4077,7 +4077,7 @@ MonoBehaviour:
   stageIndex: 0
   health: 3
   player: {fileID: 1030405806}
-  tuto: {fileID: 0}
+  tutow: {fileID: 0}
   Stages:
   - {fileID: 0}
   - {fileID: 494240972}
@@ -7988,6 +7988,8 @@ MonoBehaviour:
   itemEat: 0
   isFalling: 0
   isDon: 0
+  tuto: 0
+  tuto2: 0
   maxSpeed: 4.5
   jumpPower: 20
   accel: 1

@@ -913,7 +913,7 @@ GameObject:
   - component: {fileID: 1044720445}
   - component: {fileID: 1044720444}
   m_Layer: 5
-  m_Name: "\uC528\uD06C (1)"
+  m_Name: "\uC2DC\uD06C\uB9BF (1)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1060,7 +1060,7 @@ GameObject:
   - component: {fileID: 1321701636}
   - component: {fileID: 1321701635}
   m_Layer: 5
-  m_Name: "\uC528\uD06C"
+  m_Name: "\uC2DC\uD06C\uB9BF"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
