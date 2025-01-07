@@ -265,8 +265,17 @@ public class GameManager : MonoBehaviour
         
     }
 
-// 금액 차감 함수 추가
-public bool DeductMoney(int amount)
+    public void SetBGMVolume(float volume)
+    {
+        if (bgMusic != null)
+        {
+            bgMusic.volume = volume;
+        }
+    }
+
+
+    // 금액 차감 함수 추가
+    public bool DeductMoney(int amount)
     {
         if (moneyPoint >= amount)
         {
