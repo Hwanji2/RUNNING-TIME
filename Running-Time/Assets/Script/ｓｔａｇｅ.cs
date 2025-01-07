@@ -47,6 +47,7 @@ public class TriggerAnimationAndSceneChange : MonoBehaviour
         if (gameManager != null)
         {
             PlayerPrefs.SetInt("TotalPoint", gameManager.totalPoint);
+            PlayerPrefs.SetInt("StagePoint", gameManager.stagePoint);
             PlayerPrefs.SetInt("MoneyPoint", gameManager.moneyPoint);
             PlayerPrefs.SetInt("CoffeeCount", gameManager.coffeeCount);
             PlayerPrefs.SetInt("MilkCount", gameManager.milkCount);

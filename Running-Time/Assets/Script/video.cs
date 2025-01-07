@@ -7,7 +7,7 @@ public class VideoController : MonoBehaviour
 
     void Start()
     {
+        videoPlayer.isLooping = true; // 무한 반복 재생 설정
         videoPlayer.Play();
     }
 }
-

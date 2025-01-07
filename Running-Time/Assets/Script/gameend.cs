@@ -61,7 +61,7 @@ public class GameOverManager : MonoBehaviour
 
         // 데이터 불러오기
         remainingTime = PlayerPrefs.GetFloat("RemainingTime", 0);
-        moneyPoint = PlayerPrefs.GetInt("MoneyPoint", 0);
+        moneyPoint = PlayerPrefs.GetInt("StagePoint", 0);
         coffeeCount = PlayerPrefs.GetInt("CoffeeCount", 0);
         milkCount = PlayerPrefs.GetInt("MilkCount", 0);
         unknownItemCount = PlayerPrefs.GetInt("UnknownItemCount", 0);
@@ -324,7 +324,7 @@ public class GameOverManager : MonoBehaviour
         }
         else if (gradeText.text == "A")
         {
-            pressButtonText.text = "A+을 받으면 엔딩이 있다고 합니다.";
+            pressButtonText.text = "A+을 받으면 크레딧이 있다고 합니다.";
         }
         else
         {

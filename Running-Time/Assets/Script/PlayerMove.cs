@@ -13,6 +13,7 @@ public class PlayerMove : MonoBehaviour
     public AudioClip audioSlide;
     public AudioClip dam;
     public AudioClip audiosecret;
+    private float seVolume = 1.0f; // SE 볼륨 변수 (초기값 1.0f)
 
     public AudioClip audioFinish;
     public int secretCount = 0;
@@ -48,6 +49,8 @@ public class PlayerMove : MonoBehaviour
     private float afterImageTimer = 0f;
     private Vector3 previousPosition; // 이전 위치 저장 변수
 
+
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -63,6 +66,9 @@ public class PlayerMove : MonoBehaviour
         originalSize = capsulecollider.size;
 
         previousPosition = transform.position; // 초기 위치 설정
+                                               // 저장된 SE 볼륨 불러오기
+        seVolume = PlayerPrefs.GetFloat("SEVolume", 1.0f);
+        audioSource.volume = seVolume;
     }
 
     void Update()
@@ -514,6 +520,15 @@ public class PlayerMove : MonoBehaviour
                 break;
         }
 
+        audioSource.volume = seVolume; // SE 볼륨 적용
         audioSource.Play();
+    }
+
+    // SE 볼륨 설정 메서드
+    public void SetSEVolume(float volume)
+    {
+        seVolume = volume;
+        audioSource.volume = seVolume;
+        PlayerPrefs.SetFloat("SEVolume", seVolume); // SE 볼륨 저장
     }
 }

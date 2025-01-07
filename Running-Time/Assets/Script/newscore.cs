@@ -40,7 +40,7 @@ public class ScoreManager : MonoBehaviour
 
         // 데이터 불러오기
         remainingTime = PlayerPrefs.GetFloat("RemainingTime", 0);
-        moneyPoint = PlayerPrefs.GetInt("MoneyPoint", 0);
+        moneyPoint = PlayerPrefs.GetInt("StagePoint", 0);
         secretCount = PlayerPrefs.GetInt("SecretCount", 0);
 
         // 기록 불러오기
@@ -135,28 +135,38 @@ public class ScoreManager : MonoBehaviour
     void UpdateRecords(string name, int money, float time, int secret)
     {
         records.Add(new Record(name, money, time, secret));
+
+        // 정렬 기준: 시크릿 → 점수 → 시간
         records.Sort((a, b) =>
         {
-            int secretComparison = b.secret.CompareTo(a.secret);
+            int secretComparison = b.secret.CompareTo(a.secret); // 시크릿 수로 먼저 비교
             if (secretComparison != 0)
             {
                 return secretComparison;
             }
-            return a.time.CompareTo(b.time);
+
+            int moneyComparison = b.money.CompareTo(a.money); // 점수로 비교
+            if (moneyComparison != 0)
+            {
+                return moneyComparison;
+            }
+
+            return a.time.CompareTo(b.time); // 마지막으로 시간으로 비교 (오름차순)
         });
+
         if (records.Count > maxRecords)
         {
             records.RemoveAt(records.Count - 1);
         }
+
         SaveRecords();
     }
-
     string GetRecordsText()
     {
         string text = "< 신기록 >\n\n";
         for (int i = 0; i < records.Count; i++)
         {
-            text += $"{i + 1}위 {records[i].name} - 돈: {records[i].money}, 시간: {FormatTime(records[i].time)}, 시크릿: {records[i].secret}\n";
+            text += $"{i + 1}위 {records[i].name} - 얻은 돈: {records[i].money}, 시간: {FormatTime(records[i].time)}, 시크릿: {records[i].secret}\n";
         }
         return text;
     }
