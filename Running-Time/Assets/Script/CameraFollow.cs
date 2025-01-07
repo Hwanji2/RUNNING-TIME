@@ -5,8 +5,6 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform player; // 플레이어의 Transform
-    public Vector3 preInitialCameraPosition; // 초기 위치 전 초기 위치
-    public Vector3 initialCameraPosition; // 초기 카메라 위치
     public float smoothTime = 0.3f; // 부드러운 이동을 위한 시간
     public Vector3[] stopPositions; // 카메라가 멈출 위치 배열
     public Vector3[] resumePositions; // 카메라가 다시 따라다닐 위치 배열
@@ -14,36 +12,16 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
     private bool isFollowing = true;
-    private bool isMovingToInitial = true;
     private bool isOffsetChanging = false; // 오프셋 변경 중인지 여부
-    private float transitionDuration = 1.0f; // 초기 위치로 이동하는 데 걸리는 시간
 
     void Start()
     {
-        // 초기 위치 전 초기 위치로 설정
-        transform.position = preInitialCameraPosition;
-        isFollowing = false;
-        // 아무 키나 눌렀을 때 isFollowing을 true로 설정하고 followOffset 변경
-        if (Input.anyKeyDown)
-        {
-            isFollowing = true;
-            followOffsets[0] = followOffsets[Random.Range(0, followOffsets.Length)]; // 랜덤한 followOffset으로 변경
-        }
+        isFollowing = true; // 시작하자마자 따라가도록 설정
     }
 
     void LateUpdate()
     {
-        if (isMovingToInitial)
-        {
-            // 초기 위치로 부드럽게 이동
-            transform.position = Vector3.SmoothDamp(transform.position, initialCameraPosition, ref velocity, smoothTime);
-
-            if (Vector3.Distance(transform.position, initialCameraPosition) < 0.1f)
-            {
-                isMovingToInitial = false;
-            }
-        }
-        else if (isFollowing)
+        if (isFollowing)
         {
             // 플레이어의 위치를 따라 카메라의 새로운 위치 계산
             Vector3 targetPosition = player.position + (Vector3)followOffsets[0]; // 기본 followOffset 사용
@@ -70,28 +48,18 @@ public class CameraFollow : MonoBehaviour
                 if (Mathf.Abs(player.position.x - resumePositions[i].x) < 0.1f)
                 {
                     isFollowing = true;
-
                     followOffsets[0] = followOffsets[i]; // 해당 위치의 followOffset으로 변경
                     break;
                 }
             }
         }
-        // 아무 키나 눌렀을 때 isFollowing을 true로 설정하고 followOffset 변경
-        if (Input.anyKeyDown)
-        {
-            isFollowing = true;
-            followOffsets[0] = followOffsets[Random.Range(0, followOffsets.Length)]; // 랜덤한 followOffset으로 변경
-        }
+
         // 스페이스 키를 눌렀을 때 오프셋 변경
         if (Input.GetKeyDown(KeyCode.Space) && !isOffsetChanging)
         {
             StartCoroutine(ChangeFollowOffsetTemporarily());
         }
-
-       
     }
-
-        
 
     // followOffsets 배열을 수정하는 메서드
     public void SetFollowOffset(int index, Vector2 newOffset)
@@ -121,7 +89,7 @@ public class CameraFollow : MonoBehaviour
         isOffsetChanging = true; // 오프셋 변경 중 상태로 설정
         Vector2 originalOffset = followOffsets[0];
         followOffsets[0] = new Vector2(followOffsets[0].x, followOffsets[0].y - 3);
-        yield return new WaitForSeconds(0.5f); // 1초 후 원래 상태로 복원
+        yield return new WaitForSeconds(0.5f); // 0.5초 후 원래 상태로 복원
         followOffsets[0] = originalOffset;
         isOffsetChanging = false; // 오프셋 변경 완료 상태로 설정
     }

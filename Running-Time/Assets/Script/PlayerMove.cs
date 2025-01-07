@@ -90,7 +90,7 @@ public class PlayerMove : MonoBehaviour
                 accel = accel - 1;
         }
         // Jump
-        if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumping"))
+        if ((Input.GetButtonDown("Jump") || Input.GetKey(KeyCode.W)|| Input.GetKey(KeyCode.UpArrow)) && !anim.GetBool("isJumping"))
         {
             rigid.AddForce(Vector2.up * jumpPower * 0.8f, ForceMode2D.Impulse);
             anim.SetBool("isJumping", true);
@@ -100,7 +100,7 @@ public class PlayerMove : MonoBehaviour
 
             PlaySound("JUMP");
         }
-        if (Input.GetButtonDown("Sliding") && (!anim.GetBool("isSliding") || !anim.GetBool("slide Bool")))
+        if ((Input.GetButtonDown("Sliding") || Input.GetKey(KeyCode.S)) && (!anim.GetBool("isSliding") || !anim.GetBool("slide Bool")))
         {
             if (accel > 10)
             {
