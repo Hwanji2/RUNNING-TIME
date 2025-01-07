@@ -41,9 +41,12 @@ public class GameManager : MonoBehaviour
         milkCount = PlayerPrefs.GetInt("MilkCount", 0);
         unknownItemCount = PlayerPrefs.GetInt("UnknownItemCount", 0);
 
+       
         bgMusic = GetComponent<AudioSource>();
-        bgMusic.volume = 0.8f;
 
+        // 저장된 BGM 볼륨 불러오기 (없으면 기본값 0.8 사용)
+        float savedBGMVolume = PlayerPrefs.GetFloat("BGMVolume", 0.8f);
+        bgMusic.volume = savedBGMVolume;
         Invoke("PlayMusic", 7f);
     }
 
@@ -82,12 +85,14 @@ public class GameManager : MonoBehaviour
 
     public void ResumeBGM()
     {
-        if (!bgMusic.isPlaying)
+        // 현재 스테이지가 3이 아닌 경우에만 BGM 재생
+        if (stageIndex != 2 && !bgMusic.isPlaying)
         {
             bgMusic.time = pausedBGMTime;
             bgMusic.Play();
         }
     }
+
 
     void Update()
     {
@@ -136,7 +141,14 @@ public class GameManager : MonoBehaviour
             UITimer.color = Color.white;
         }
     }
-
+    public void PauseBGM()
+    {
+        if (bgMusic.isPlaying)
+        {
+            pausedBGMTime = bgMusic.time;
+            bgMusic.Pause();
+        }
+    }
     public void NextStage()
     {
         Debug.Log("player.tuto: " + player.tuto);
