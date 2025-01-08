@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Video; // VideoPlayer 사용
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -14,14 +13,15 @@ public class SettingsMenu : MonoBehaviour
 
     public List<AudioSource> bgmSources;  // 여러 BGM AudioSource 리스트
     public List<AudioSource> seSources;   // 여러 SE AudioSource 리스트
-    public List<VideoPlayer> videoPlayers; // 여러 VideoPlayer 리스트
 
     private float playtime = 0f;
     private GameManager gameManager;
+    private PlayerMove playerMove;  // PlayerMove 참조
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        playerMove = FindObjectOfType<PlayerMove>(); // PlayerMove 인스턴스 가져오기
 
         // 저장된 BGM 및 SE 볼륨 불러오기
         bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.8f);
@@ -66,41 +66,20 @@ public class SettingsMenu : MonoBehaviour
     public void OnSEVolumeChange(float volume)
     {
         SetSEVolume(volume);
+        if (playerMove != null)
+        {
+            playerMove.SetSEVolume(volume);  // PlayerMove의 SE 볼륨 동기화
+        }
         PlayerPrefs.SetFloat("SEVolume", volume);  // 즉시 저장
     }
 
     private void SetBGMVolume(float volume)
     {
-        // BGM AudioSource 볼륨 설정
         foreach (AudioSource bgm in bgmSources)
         {
             if (bgm != null)
             {
                 bgm.volume = volume;
-            }
-        }
-
-        // VideoPlayer 오디오 볼륨 설정
-        foreach (VideoPlayer video in videoPlayers)
-        {
-            if (video != null)
-            {
-                if (video.audioOutputMode == VideoAudioOutputMode.AudioSource)
-                {
-                    // AudioSource를 사용하는 경우
-                    foreach (AudioSource audioSource in video.GetComponents<AudioSource>())
-                    {
-                        audioSource.volume = volume;
-                    }
-                }
-                else if (video.audioOutputMode == VideoAudioOutputMode.Direct)
-                {
-                    // Direct 모드에서 각 오디오 트랙의 볼륨 설정
-                    for (ushort track = 0; track < video.audioTrackCount; track++)
-                    {
-                        video.SetDirectAudioVolume(track, volume);
-                    }
-                }
             }
         }
     }
