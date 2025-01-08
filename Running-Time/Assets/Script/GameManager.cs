@@ -251,18 +251,16 @@ public class GameManager : MonoBehaviour
         player.VelocityZero();
     }
 
-    public void Restart()
-    {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(0);
-    }
-
     private void GameOver()
     {
         Debug.Log("게임 오버!");
 
         bgMusic.Stop();
-        PlayerPrefs.SetInt("TotalPoint", totalPoint);
+
+        // 이번 판에 얻은 돈과 총합 돈을 각각 저장
+        PlayerPrefs.SetInt("StagePoint", stagePoint);  // 이번 판에 얻은 돈
+        PlayerPrefs.SetInt("TotalPoint", totalPoint);  // 총합 돈
+
         PlayerPrefs.SetInt("MoneyPoint", moneyPoint);
         PlayerPrefs.SetInt("CoffeeCount", coffeeCount);
         PlayerPrefs.SetInt("MilkCount", milkCount);
@@ -273,8 +271,19 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("ENDING");
         Time.timeScale = 1;
         a = player.secretCount;
+    }
 
-        
+    public void Restart()
+    {
+        Time.timeScale = 1;
+
+        // 이전에 저장된 총합 돈 불러오기
+        totalPoint = PlayerPrefs.GetInt("TotalPoint", 0);
+
+        // 이번 판에 얻은 돈 초기화
+        stagePoint = 0;
+
+        SceneManager.LoadScene(0);
     }
 
     public void SetBGMVolume(float volume)
