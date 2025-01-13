@@ -34,7 +34,7 @@
 
 ### 다운로드 방법:
 1. 아래 링크에서 ZIP 파일 다운로드  
-   [🔗 다운로드 링크](https://drive.google.com/file/d/1qk2Z3bLCLJJReZOf4gKYfLRdpXWwh8gD/view?usp=sharing)
+   [🔗 다운로드 링크]https://drive.google.com/file/d/1yB-F7eweJ9L8L6QNSDr-2weolVkEUjYf/view?usp=sharing
 2. ZIP 파일 압축 해제
 3. 실행 파일(`.exe`) 실행
 
