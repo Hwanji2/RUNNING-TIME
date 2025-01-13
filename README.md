@@ -1,5 +1,8 @@
 # 🏃 RUNNING TIME!
 
+![image](https://github.com/user-attachments/assets/90de9bfd-70c3-423d-928e-eb182b7edc85)
+![image](https://github.com/user-attachments/assets/e9395c88-bd33-4123-b8ee-7931869c943b)
+![image](https://github.com/user-attachments/assets/b5a3a76f-873d-4132-b6e0-0fc79629b6dd)
 
 
 **RUNNING TIME! Ep1: 지각이다 공대생**은 3분 안에 강의실에 도착해야 하는 스릴 넘치는 액션 러닝 게임입니다.  
@@ -28,6 +31,7 @@
 - **이동**: 방향키 & SHIFT 🏃  
 - **점프**: SPACE 🦘  
 - **상호작용**: 좌클릭 🖱️  
+ (wasd, zxcvb 등 다른 버튼으로도 조작 가능)
 
 **⏳ 3분 안에 학점이 결정됩니다!** 긴장감을 가지고 도전하세요! 🚀
 
