@@ -1,4 +1,4 @@
-# RUNNING TIME! Ep1: 지각이다 공대생
+# RUNNING TIME!
 
 ![image](https://github.com/user-attachments/assets/64e483ba-218d-4299-87ef-3e559b6504d5)
 
