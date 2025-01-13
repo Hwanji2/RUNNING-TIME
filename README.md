@@ -41,7 +41,7 @@
 - **환경**: 🖥️ PC  
 - **권장 해상도**: 2560 x 1440
 
-### 다운로드 방법:
+### 다운로드 방법
 1. 아래 링크에서 ZIP 파일 다운로드  
    [🔗 다운로드 링크](https://drive.google.com/file/d/1yB-F7eweJ9L8L6QNSDr-2weolVkEUjYf/view?usp=sharing)
 2. ZIP 파일 압축 해제 🗂️  
