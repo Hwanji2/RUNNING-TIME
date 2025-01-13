@@ -1,6 +1,6 @@
 # 🏃 RUNNING TIME!
 
-![image](https://github.com/user-attachments/assets/64e483ba-218d-4299-87ef-3e559b6504d5)
+
 
 **RUNNING TIME! Ep1: 지각이다 공대생**은 3분 안에 강의실에 도착해야 하는 스릴 넘치는 액션 러닝 게임입니다.  
 공학적인 지식을 활용하며 달리는 긴장감과 재미를 느껴보세요!
@@ -43,8 +43,13 @@
    [🔗 다운로드 링크](https://drive.google.com/file/d/1yB-F7eweJ9L8L6QNSDr-2weolVkEUjYf/view?usp=sharing)
 2. ZIP 파일 압축 해제 🗂️  
 3. 실행 파일(`.exe`) 실행 ▶️
-
+4. 
 ![image](https://github.com/user-attachments/assets/4634ffa3-3ed8-426a-96cf-31bcd5343d56)
+
+5. 🛠️음량 설정은 러닝셋업에서 
+![image](https://github.com/user-attachments/assets/90cc7d8b-c277-4217-bd24-151e54248acb)
+
+
 
 ---
 
@@ -88,3 +93,4 @@
 ---
 
 ### 🎮 즐겁게 달려보세요!
+![image](https://github.com/user-attachments/assets/64e483ba-218d-4299-87ef-3e559b6504d5)
