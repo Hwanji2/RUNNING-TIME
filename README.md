@@ -1,4 +1,4 @@
-# 🏃 RUNNING TIME!
+# RUNNING TIME 🏃 
 
 ![image](https://github.com/user-attachments/assets/e9395c88-bd33-4123-b8ee-7931869c943b)
 ![image](https://github.com/user-attachments/assets/b5a3a76f-873d-4132-b6e0-0fc79629b6dd)
