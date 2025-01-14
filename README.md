@@ -1,13 +1,9 @@
 # RUNNING TIME 🏃 
 
 ![image](https://github.com/user-attachments/assets/e9395c88-bd33-4123-b8ee-7931869c943b)
-![image](https://github.com/user-attachments/assets/b5a3a76f-873d-4132-b6e0-0fc79629b6dd)
-
 
 **RUNNING TIME! Ep1: 지각이다 공대생**은 3분 안에 강의실에 도착해야 하는 스릴 넘치는 액션 러닝 게임입니다.  
 공학적인 지식을 활용하며 달리는 긴장감과 재미를 느껴보세요!
-
-[![RUNNING TIME! Ep1: 지각이다 공대생](https://img.youtube.com/vi/TIsIuyJ4QXg/0.jpg)](https://youtu.be/TIsIuyJ4QXg)
 
 ---
 
@@ -97,3 +93,4 @@
 
 ### 🎮 즐겁게 달려보세요!
 ![image](https://github.com/user-attachments/assets/90de9bfd-70c3-423d-928e-eb182b7edc85)
+![image](https://github.com/user-attachments/assets/b5a3a76f-873d-4132-b6e0-0fc79629b6dd)
