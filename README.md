@@ -23,7 +23,8 @@
 - **이동**: 방향키 & SHIFT 연타🏃  
 - **점프**: SPACE 🦘  
 - **상호작용**: 좌클릭 🖱️
-  
+  ![image](https://github.com/user-attachments/assets/585d4c69-3f5d-4ab4-a5fb-f3930793af6f)
+
 ---
 
 ## 📦 다운로드 및 실행
@@ -86,5 +87,5 @@
 ### 🎮 즐겁게 달려보세요!
 ![image](https://github.com/user-attachments/assets/90de9bfd-70c3-423d-928e-eb182b7edc85)
 ![image](https://github.com/user-attachments/assets/b5a3a76f-873d-4132-b6e0-0fc79629b6dd)
-![image](https://github.com/user-attachments/assets/e30ee7f4-2bb8-48be-908a-ac07e876d1b5)
+
 
