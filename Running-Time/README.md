@@ -1,8 +1,5 @@
-- │  .gitattributes
-- │  .gitignore
-- │  README.md
-- │  
-- └─Running-Time
+
+- ─Running-Time
 -    │  .gitignore
 -    │  Running-Time.sln
 -    │  README.md
