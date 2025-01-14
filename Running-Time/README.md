@@ -2,8 +2,7 @@
 ─ Running-Time  
 <br>   │  .gitignore  
 <br>   │  Running-Time.sln  
-<br>   │  README.md  
-<br>  
+<br>   │  README.md   
 <br>   ├─Assets  
 <br>   │  ├─Audio  
 <br>   │  ├─Fonts  
@@ -22,8 +21,6 @@
 <br>   │  │  │  ArrowEnemy.cs  
 <br>   │  │  │  unknown.cs  
 <br>   │  │  │  ...  
-<br>   │  
 <br>   │  ├─TileMap  
 <br>   │  ├─Video  
-<br>  
 <br>   └─Library (생략)          // Unity 자동 생성 라이브러리
