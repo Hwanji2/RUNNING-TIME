@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
 
@@ -13,26 +14,34 @@ public class VideoButtonEffect : MonoBehaviour
     public Button targetButton;
 
     [Header("⚙️ 깜빡임 및 움직임 설정")]
-    public float blinkInterval = 0.5f; // 점멸 간격 (초)
-    public float moveAmount = 5f; // 위아래 움직이는 거리
-    public float moveSpeed = 1f; // 움직임 속도
+    public float blinkInterval = 0.5f;
+    public float moveAmount = 5f;
+    public float moveSpeed = 1f;
 
     [Header("🔄 스페이스 키 애니메이션 설정")]
-    public float squishAmount = 0.6f; // 버튼 찌그러짐 비율 (가로)
-    public float stretchAmount = 1.3f; // 버튼 늘어남 비율 (세로)
-    public float moveDownAmount = 20f; // 버튼이 내려가는 거리
-    public float animationSpeed = 0.2f; // 버튼 변형 속도
+    public float squishAmount = 0.6f;
+    public float stretchAmount = 1.3f;
+    public float moveDownAmount = 20f;
+    public float animationSpeed = 0.2f;
+
+    [Header("🔊 효과음 설정")]
+    public AudioSource audioSource;
+    public AudioClip pressSound;
+    public AudioClip releaseSound;
+
+    [Header("📌 이동할 씬 이름")]
+    public string sceneName;
 
     private RectTransform buttonRectTransform;
     private CanvasGroup buttonCanvasGroup;
     private Vector2 originalPosition;
     private Vector3 originalScale;
     private bool isBlinking = false;
-    private bool isAnimating = false; // 스페이스 키 애니메이션 실행 중 여부
+    private bool isAnimating = false;
+    private bool isSpacePressed = false;
 
     void Start()
     {
-        // Inspector에서 지정한 VideoPlayer와 Button이 없을 경우 경고 메시지 출력
         if (videoPlayer == null)
         {
             Debug.LogError("⚠️ VideoPlayer가 지정되지 않았습니다! Inspector에서 설정하세요.");
@@ -41,6 +50,11 @@ public class VideoButtonEffect : MonoBehaviour
         if (targetButton == null)
         {
             Debug.LogError("⚠️ TMP Button이 지정되지 않았습니다! Inspector에서 설정하세요.");
+            return;
+        }
+        if (audioSource == null)
+        {
+            Debug.LogError("⚠️ AudioSource가 지정되지 않았습니다! Inspector에서 설정하세요.");
             return;
         }
 
@@ -54,19 +68,18 @@ public class VideoButtonEffect : MonoBehaviour
 
         originalPosition = buttonRectTransform.anchoredPosition;
         originalScale = buttonRectTransform.localScale;
-        buttonCanvasGroup.alpha = 0; // 처음에는 버튼 숨김
+        buttonCanvasGroup.alpha = 0;
     }
 
     void Update()
     {
-        if (videoPlayer.isPlaying && !isAnimating) // 애니메이션 중이 아닐 때만
+        if (videoPlayer.isPlaying && !isAnimating)
         {
             double currentTime = videoPlayer.time;
 
-            // 비디오 특정 구간에서만 버튼 점멸 & 움직임 실행
-            if ((currentTime >= 4 && currentTime <= 15) || (currentTime >= 69)) // 1:09(69초)부터 다시 표시
+            if ((currentTime >= 4 && currentTime <= 15) || (currentTime >= 69))
             {
-                buttonCanvasGroup.alpha = 1; 
+                buttonCanvasGroup.alpha = 1;
                 if (!isBlinking)
                 {
                     StartCoroutine(BlinkAndMoveButton());
@@ -75,15 +88,23 @@ public class VideoButtonEffect : MonoBehaviour
             else
             {
                 StopBlinking();
-                buttonCanvasGroup.alpha = 0; // 처음에는 버튼 숨김
+                buttonCanvasGroup.alpha = 0;
             }
         }
 
-        // 스페이스 키를 눌렀을 때
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isSpacePressed)
         {
-            StopBlinking(); // 점멸 & 움직임 멈춤
-            StartCoroutine(AnimatePress()); // 버튼 애니메이션 실행
+            isSpacePressed = true;
+            audioSource.PlayOneShot(pressSound);
+            StopBlinking();
+            StartCoroutine(AnimatePress());
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space) && isSpacePressed)
+        {
+            isSpacePressed = false;
+            audioSource.PlayOneShot(releaseSound);
+            StartCoroutine(DelayedSceneLoad()); // 1초 후 씬 전환
         }
     }
 
@@ -97,14 +118,9 @@ public class VideoButtonEffect : MonoBehaviour
             while (elapsedTime < blinkInterval)
             {
                 elapsedTime += Time.deltaTime;
-
-                // 버튼 깜빡이기
-                buttonCanvasGroup.alpha = Mathf.PingPong(Time.time * 2, 1); // 0~1 사이 반복
-
-                // 버튼 위아래 움직이기
+                buttonCanvasGroup.alpha = Mathf.PingPong(Time.time * 2, 1);
                 float offset = Mathf.Sin(Time.time * moveSpeed) * moveAmount;
                 buttonRectTransform.anchoredPosition = originalPosition + new Vector2(0, offset);
-
                 yield return null;
             }
         }
@@ -113,31 +129,26 @@ public class VideoButtonEffect : MonoBehaviour
     void StopBlinking()
     {
         isBlinking = false;
-        buttonCanvasGroup.alpha = 1; // 버튼 완전히 보이게 설정
-        buttonRectTransform.anchoredPosition = originalPosition; // 원래 위치로 복귀
+        buttonCanvasGroup.alpha = 1;
+        buttonRectTransform.anchoredPosition = originalPosition;
     }
 
     IEnumerator AnimatePress()
     {
         isAnimating = true;
-
-        // 버튼 원래 위치로 복귀
         buttonRectTransform.anchoredPosition = originalPosition;
         buttonCanvasGroup.alpha = 1;
 
-        // 가로로 찌그러지며 아래로 이동
         yield return StartCoroutine(SquishAndMoveDown());
 
-        // 스페이스 키를 떼면 복귀
         while (!Input.GetKeyUp(KeyCode.Space))
         {
             yield return null;
         }
 
-        // 세로로 늘어나면서 원래 위치로 돌아옴
         yield return StartCoroutine(StretchAndReturn());
 
-        isAnimating = false; // 애니메이션 완료
+        isAnimating = false;
     }
 
     IEnumerator SquishAndMoveDown()
@@ -172,7 +183,6 @@ public class VideoButtonEffect : MonoBehaviour
 
         buttonRectTransform.localScale = stretchedScale;
 
-        // 원래 위치와 크기로 복귀
         elapsedTime = 0f;
         while (elapsedTime < animationSpeed)
         {
@@ -184,5 +194,23 @@ public class VideoButtonEffect : MonoBehaviour
 
         buttonRectTransform.localScale = originalScale;
         buttonRectTransform.anchoredPosition = originalPosition;
+    }
+
+    IEnumerator DelayedSceneLoad()
+    {
+        yield return new WaitForSeconds(1f); // 1초 대기
+        LoadNextScene();
+    }
+
+    void LoadNextScene()
+    {
+        if (!string.IsNullOrEmpty(sceneName))
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            Debug.LogError("⚠️ 씬 이름이 설정되지 않았습니다! Inspector에서 sceneName을 지정하세요.");
+        }
     }
 }
