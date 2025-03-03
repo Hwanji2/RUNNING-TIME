@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class Object3Script : MonoBehaviour
 {
-    public PlayerMove playerMove; // ÇÃ·¹ÀÌ¾î ½ºÅ©¸³Æ®¸¦ ÂüÁ¶
-    public float bounceForce = 10f; // ¹İµ¿À¸·Î Æ¨°Ü ³ª°¡´Â Èû
+    public PlayerMove playerMove; // í”Œë ˆì´ì–´ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì°¸ì¡°
+    public float bounceForce = 10f; // ë°˜ë™ìœ¼ë¡œ íŠ•ê²¨ ë‚˜ê°€ëŠ” í˜
     private Rigidbody2D rigidbody2D;
     private Collider2D collider2D;
 
@@ -12,24 +12,35 @@ public class Object3Script : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
+
+        // PlayerMoveê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ìë™ìœ¼ë¡œ ì°¾ê¸°
+        if (playerMove == null)
+        {
+            playerMove = FindObjectOfType<PlayerMove>();
+            if (playerMove == null)
+            {
+                Debug.LogError("âš ï¸ PlayerMoveë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì”¬ì— PlayerMove ìŠ¤í¬ë¦½íŠ¸ê°€ ìˆëŠ”ì§€ í™•ì¸í•˜ì„¸ìš”.");
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && playerMove.running)
+        // playerMoveê°€ nullì´ ì•„ë‹ ë•Œë§Œ ì‹¤í–‰
+        if (collision.gameObject.CompareTag("Player") && playerMove != null && playerMove.running)
         {
             Debug.Log("Collision Detected with Player");
             Vector2 bounceDirection = (collision.transform.position - transform.position).normalized;
             rigidbody2D.AddForce(bounceDirection * bounceForce, ForceMode2D.Impulse);
-            rigidbody2D.gravityScale = 1; // Áß·Â È°¼ºÈ­
-            collider2D.enabled = false; // Äİ¶óÀÌ´õ ºñÈ°¼ºÈ­
+            rigidbody2D.gravityScale = 1; // ì¤‘ë ¥ í™œì„±í™”
+            collider2D.enabled = false; // ì½œë¼ì´ë” ë¹„í™œì„±í™”
             StartCoroutine(DestroyAfterFall());
         }
     }
 
     private IEnumerator DestroyAfterFall()
     {
-        yield return new WaitForSeconds(5f); // 5ÃÊ ÈÄ ¿ÀºêÁ¦ »èÁ¦
+        yield return new WaitForSeconds(5f); // 5ì´ˆ í›„ ì˜¤ë¸Œì œ ì‚­ì œ
         Destroy(gameObject);
     }
 }

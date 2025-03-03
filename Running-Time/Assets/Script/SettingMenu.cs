@@ -1,80 +1,93 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
     public Slider bgmSlider;
-    public Slider seSlider;  // SE º¼·ı ½½¶óÀÌ´õ
-    public Toggle fullscreenToggle;
-    public Text versionText;
-    public Text playtimeText;
-    public GameObject settingsPanel;  // ¼³Á¤ ÆĞ³Î ÂüÁ¶
+    public Slider seSlider;
+    public GameObject settingsPanel;
 
-    public List<AudioSource> bgmSources;  // ¿©·¯ BGM AudioSource ¸®½ºÆ®
-    public List<AudioSource> seSources;   // ¿©·¯ SE AudioSource ¸®½ºÆ®
+    public List<AudioSource> bgmSources = new List<AudioSource>(); // ê¸°ë³¸ê°’ í• ë‹¹
+    public List<AudioSource> seSources = new List<AudioSource>();
 
-    private float playtime = 0f;
     private GameManager gameManager;
-    private PlayerMove playerMove;  // PlayerMove ÂüÁ¶
+    private PlayerMove playerMove;
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        playerMove = FindObjectOfType<PlayerMove>(); // PlayerMove ÀÎ½ºÅÏ½º °¡Á®¿À±â
+        playerMove = FindObjectOfType<PlayerMove>();
 
-        // ÀúÀåµÈ BGM ¹× SE º¼·ı ºÒ·¯¿À±â
-        bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.8f);
-        seSlider.value = PlayerPrefs.GetFloat("SEVolume", 1.0f);
+        Debug.Log($"gameManager: {gameManager}");
+        Debug.Log($"playerMove: {playerMove}");
 
-        // ÃÊ±â BGM ¹× SE º¼·ı ¼³Á¤
-        SetBGMVolume(bgmSlider.value);
-        SetSEVolume(seSlider.value);
+        if (bgmSlider == null) Debug.LogError("âš ï¸ bgmSliderê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+        if (seSlider == null) Debug.LogError("âš ï¸ seSliderê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+        if (settingsPanel == null) Debug.LogError("âš ï¸ settingsPanelì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 
-        // ½½¶óÀÌ´õ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
-        bgmSlider.onValueChanged.AddListener(OnBGMVolumeChange);
-        seSlider.onValueChanged.AddListener(OnSEVolumeChange);
-        fullscreenToggle.onValueChanged.AddListener(OnFullscreenToggle);
+        // PlayerPrefsì—ì„œ ë¶ˆëŸ¬ì˜¨ ë³¼ë¥¨ ê°’ ê°€ì ¸ì˜¤ê¸°
+        float bgmVolume = PlayerPrefs.GetFloat("BGMVolume", 0.8f);
+        float seVolume = PlayerPrefs.GetFloat("SEVolume", 1.0f);
 
-        // ÀúÀåµÈ ÀüÃ¼È­¸é ¼³Á¤ ºÒ·¯¿À±â
-        bool isFullscreen = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
-        fullscreenToggle.isOn = isFullscreen;
-        Screen.fullScreen = isFullscreen;
+        // ìŠ¬ë¼ì´ë”ê°€ í• ë‹¹ë˜ì–´ ìˆì„ ë•Œë§Œ ê°’ ì„¤ì •
+        if (bgmSlider != null) bgmSlider.value = bgmVolume;
+        if (seSlider != null) seSlider.value = seVolume;
 
-        if (!isFullscreen)
+        // ë³¼ë¥¨ ì„¤ì • (BGM / SE)
+        SetBGMVolume(bgmVolume);
+        SetSEVolume(seVolume);
+
+        // ìŠ¬ë¼ì´ë” ì´ë²¤íŠ¸ ë“±ë¡ (null ì²´í¬ ì¶”ê°€)
+        if (bgmSlider != null)
         {
-            Screen.SetResolution(1600, 900, false); // Ã¢ ¸ğµå ÇØ»óµµ ¼³Á¤
+            bgmSlider.onValueChanged.AddListener(OnBGMVolumeChange);
+        }
+        else
+        {
+            Debug.LogError("âš ï¸ bgmSliderê°€ ì„¤ì •ë˜ì§€ ì•Šì•„ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆë¥¼ ì¶”ê°€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
 
-        versionText.text = "Jihwan Lee";
-        playtime = PlayerPrefs.GetFloat("Playtime", 0f);
-        UpdatePlaytimeText();
-    }
-
-    void Update()
-    {
-        playtime += Time.unscaledDeltaTime;
-        UpdatePlaytimeText();
+        if (seSlider != null)
+        {
+            seSlider.onValueChanged.AddListener(OnSEVolumeChange);
+        }
+        else
+        {
+            Debug.LogError("âš ï¸ seSliderê°€ ì„¤ì •ë˜ì§€ ì•Šì•„ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆë¥¼ ì¶”ê°€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+        }
     }
 
     public void OnBGMVolumeChange(float volume)
     {
         SetBGMVolume(volume);
-        PlayerPrefs.SetFloat("BGMVolume", volume);  // Áï½Ã ÀúÀå
+        PlayerPrefs.SetFloat("BGMVolume", volume);
     }
 
     public void OnSEVolumeChange(float volume)
     {
         SetSEVolume(volume);
+
         if (playerMove != null)
         {
-            playerMove.SetSEVolume(volume);  // PlayerMoveÀÇ SE º¼·ı µ¿±âÈ­
+            playerMove.SetSEVolume(volume);
         }
-        PlayerPrefs.SetFloat("SEVolume", volume);  // Áï½Ã ÀúÀå
+        else
+        {
+            Debug.LogWarning("âš ï¸ PlayerMoveê°€ í• ë‹¹ë˜ì§€ ì•Šì•„ SE ë³¼ë¥¨ì„ ì ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+        }
+
+        PlayerPrefs.SetFloat("SEVolume", volume);
     }
 
     private void SetBGMVolume(float volume)
     {
+        if (bgmSources == null || bgmSources.Count == 0)
+        {
+            Debug.LogWarning("âš ï¸ bgmSourcesê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤. BGM ë³¼ë¥¨ì„ ì ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+            return;
+        }
+
         foreach (AudioSource bgm in bgmSources)
         {
             if (bgm != null)
@@ -86,6 +99,12 @@ public class SettingsMenu : MonoBehaviour
 
     private void SetSEVolume(float volume)
     {
+        if (seSources == null || seSources.Count == 0)
+        {
+            Debug.LogWarning("âš ï¸ seSourcesê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤. SE ë³¼ë¥¨ì„ ì ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+            return;
+        }
+
         foreach (AudioSource se in seSources)
         {
             if (se != null)
@@ -95,50 +114,21 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    public void OnFullscreenToggle(bool isFullscreen)
-    {
-        Screen.fullScreen = isFullscreen;
-
-        if (isFullscreen)
-        {
-            // ÀüÃ¼È­¸é ¸ğµå
-            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
-        }
-        else
-        {
-            // Ã¢ ¸ğµå ÇØ»óµµ 1600x900 ¼³Á¤
-            Screen.SetResolution(1600, 900, false);
-        }
-
-        PlayerPrefs.SetInt("Fullscreen", isFullscreen ? 1 : 0);  // Áï½Ã ÀúÀå
-    }
-
-    private void UpdatePlaytimeText()
-    {
-        int minutes = Mathf.FloorToInt(playtime / 60);
-        int seconds = Mathf.FloorToInt(playtime % 60);
-        playtimeText.text = $"Playtime  {minutes}m {seconds}s";
-    }
-
-    public void OnApplicationQuit()
-    {
-        PlayerPrefs.SetFloat("Playtime", playtime);
-    }
-
-    // °è¼ÓÇÏ±â ¹öÆ° ´­·¶À» ¶§ È£ÃâµÇ´Â ¸Ş¼­µå
     public void OnResumeButton()
     {
-        settingsPanel.SetActive(false);  // ¼³Á¤ ÆĞ³Î ºñÈ°¼ºÈ­
-        Time.timeScale = 1;  // °ÔÀÓ ´Ù½Ã ÁøÇà
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+        Time.timeScale = 1;
     }
 
-    // Á¾·á ¹öÆ° ´­·¶À» ¶§ È£ÃâµÇ´Â ¸Ş¼­µå
     public void OnQuitButton()
     {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;  // ¿¡µğÅÍ¿¡¼­ ÇÃ·¹ÀÌ ¸ğµå Á¾·á
+        UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();  // ½ÇÁ¦ ºôµåµÈ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç Á¾·á
+        Application.Quit();
 #endif
     }
 }

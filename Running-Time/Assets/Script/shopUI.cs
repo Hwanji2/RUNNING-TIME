@@ -1,19 +1,19 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    public GameObject[] shopUIs; // 5°³ÀÇ »óÁ¡ UI
-    public Button[] closeButtons; // °¢ »óÁ¡ UIÀÇ X ¹öÆ°
-    public Button[] coffeeButtons; // °¢ »óÁ¡ UIÀÇ Ä¿ÇÇ ¹öÆ°
-    public Button[] milkButtons; // °¢ »óÁ¡ UIÀÇ ¿ìÀ¯ ¹öÆ°
-    public Button[] unknownItemButtons; // °¢ »óÁ¡ UIÀÇ ??? ¹öÆ°
-    public AudioClip purchaseSound; // ±¸ÀÔ »ç¿îµå Å¬¸³
+    public GameObject[] shopUIs; // 7ê°œì˜ ìƒì  UI
+    public Button[] closeButtons; // ê° ìƒì  UIì˜ X ë²„íŠ¼
+    public Button[] coffeeButtons; // ê° ìƒì  UIì˜ ì»¤í”¼ ë²„íŠ¼
+    public Button[] milkButtons; // ê° ìƒì  UIì˜ ìš°ìœ  ë²„íŠ¼
+    public Button[] unknownItemButtons; // ê° ìƒì  UIì˜ ??? ë²„íŠ¼
+    public AudioClip purchaseSound; // êµ¬ì… ì‚¬ìš´ë“œ í´ë¦½
 
     private int currentShopIndex = 0;
-    private AudioSource audioSource; // ¿Àµğ¿À ¼Ò½º
+    private AudioSource audioSource; // ì˜¤ë””ì˜¤ ì†ŒìŠ¤
 
     public GameManager gameManager; // Reference to GameManager
 
@@ -21,20 +21,43 @@ public class ShopManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
 
-        // °¢ ¹öÆ°¿¡ Å¬¸¯ ÀÌº¥Æ® Ãß°¡
-        for (int i = 0; i < shopUIs.Length; i++)
+        // ê°€ì¥ ì‘ì€ ë°°ì—´ ê¸¸ì´ë¥¼ ì°¾ì•„ì„œ ì‚¬ìš©
+        int minCount = Mathf.Min(
+            shopUIs.Length,
+            closeButtons.Length,
+            coffeeButtons.Length,
+            milkButtons.Length,
+            unknownItemButtons.Length
+        );
+
+        if (minCount < shopUIs.Length)
         {
-            int index = i; // ·ÎÄÃ º¯¼ö·Î ÀÎµ¦½º ÀúÀå
-            closeButtons[i].onClick.AddListener(() => CloseShop());
-            coffeeButtons[i].onClick.AddListener(() => BuyCoffee());
-            milkButtons[i].onClick.AddListener(() => BuyMilk());
-            unknownItemButtons[i].onClick.AddListener(() => BuyUnknownItem());
+            Debug.LogWarning($"âš ï¸ ì¼ë¶€ ë²„íŠ¼ ë°°ì—´ì˜ ê¸¸ì´ê°€ ë¶€ì¡±í•©ë‹ˆë‹¤. shopUIs: {shopUIs.Length}, " +
+                             $"closeButtons: {closeButtons.Length}, coffeeButtons: {coffeeButtons.Length}, " +
+                             $"milkButtons: {milkButtons.Length}, unknownItemButtons: {unknownItemButtons.Length}");
+        }
+
+        for (int i = 0; i < minCount; i++) // ë°°ì—´ ì¤‘ ìµœì†Œ ê¸¸ì´ê¹Œì§€ë§Œ ë°˜ë³µ
+        {
+            int index = i; // ë¡œì»¬ ë³€ìˆ˜ë¡œ ì¸ë±ìŠ¤ ì €ì¥
+
+            if (closeButtons[index] != null)
+                closeButtons[index].onClick.AddListener(() => CloseShop());
+
+            if (coffeeButtons[index] != null)
+                coffeeButtons[index].onClick.AddListener(() => BuyCoffee());
+
+            if (milkButtons[index] != null)
+                milkButtons[index].onClick.AddListener(() => BuyMilk());
+
+            if (unknownItemButtons[index] != null)
+                unknownItemButtons[index].onClick.AddListener(() => BuyUnknownItem());
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)) // Æ¯Á¤ Å°¸¦ ´­·¯ »óÁ¡ ¿­±â
+        if (Input.GetKeyDown(KeyCode.E)) // íŠ¹ì • í‚¤ë¥¼ ëˆŒëŸ¬ ìƒì  ì—´ê¸°
         {
             ToggleShopUI();
         }
@@ -42,10 +65,17 @@ public class ShopManager : MonoBehaviour
 
     void ToggleShopUI()
     {
+        if (shopUIs.Length == 0)
+        {
+            Debug.LogWarning("âš ï¸ shopUIs ë°°ì—´ì´ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤. Unityì—ì„œ í™•ì¸í•˜ì„¸ìš”.");
+            return;
+        }
+
         bool isActive = !shopUIs[currentShopIndex].activeSelf;
         foreach (GameObject shopUI in shopUIs)
         {
-            shopUI.SetActive(isActive);
+            if (shopUI != null)
+                shopUI.SetActive(isActive);
         }
     }
 
@@ -53,13 +83,14 @@ public class ShopManager : MonoBehaviour
     {
         foreach (GameObject shopUI in shopUIs)
         {
-            shopUI.SetActive(false);
+            if (shopUI != null)
+                shopUI.SetActive(false);
         }
     }
 
     public void BuyCoffee()
     {
-        if (gameManager.DeductMoney(1100)) // Ä¿ÇÇ °¡°İ
+        if (gameManager != null && gameManager.DeductMoney(1100)) // ì»¤í”¼ ê°€ê²©
         {
             gameManager.coffeeCount++;
             PlayPurchaseSound();
@@ -69,7 +100,7 @@ public class ShopManager : MonoBehaviour
 
     public void BuyMilk()
     {
-        if (gameManager.DeductMoney(2300)) // ¿ìÀ¯ °¡°İ
+        if (gameManager != null && gameManager.DeductMoney(2300)) // ìš°ìœ  ê°€ê²©
         {
             gameManager.milkCount++;
             PlayPurchaseSound();
@@ -79,7 +110,7 @@ public class ShopManager : MonoBehaviour
 
     public void BuyUnknownItem()
     {
-        if (gameManager.DeductMoney(999999)) // ??? °¡°İ
+        if (gameManager != null && gameManager.DeductMoney(999999)) // ??? ê°€ê²©
         {
             gameManager.unknownItemCount++;
             PlayPurchaseSound();

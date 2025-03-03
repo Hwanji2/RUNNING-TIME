@@ -43,9 +43,6 @@ public class ElectricWater : MonoBehaviour
             while (elapsedTime < shockDuration)
             {
                 playerRigidbody.gravityScale = 0.1f; // 물 속에서 중력 감소
-
-                // 감전 데미지 적용 (예시)
-                player.SendMessage("OnDamaged", Vector2.zero);
                 gamjeon = true;
                 players.accel = 0;
                 // 감전음 재생

@@ -411,7 +411,7 @@ public class PlayerMove : MonoBehaviour
 
         // Enemy Die
         EnemyMove enemyMove = enemy.GetComponent<EnemyMove>();
-        enemyMove.OnDamaged();
+
     }
 
     public void OnDamaged(Vector2 targetPos)
@@ -436,10 +436,6 @@ public class PlayerMove : MonoBehaviour
         if (rb != null&&!(accel==0))
         {
             rb.AddForce(new Vector2(-20f * direction, 10f), ForceMode2D.Impulse); // 방향에 따라 힘을 추가
-        }
-        else
-        {
-            Debug.LogError("Rigidbody2D component is missing!");
         }
 
         anim.SetTrigger("doDamaged");

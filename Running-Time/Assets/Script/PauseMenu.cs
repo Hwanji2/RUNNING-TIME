@@ -1,29 +1,46 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;  // ¹öÆ° »ç¿ëÀ» À§ÇØ Ãß°¡
+using UnityEngine.UI;  // ë²„íŠ¼ ì‚¬ìš©ì„ ìœ„í•´ ì¶”ê°€
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject escMenu;  // ESC ¸Ş´º UI
-    public Button resumeButton; // ÀÌ¾îÇÏ±â ¹öÆ°
-    public Button quitButton;   // Á¾·á ¹öÆ°
-    public GameManager gameManager;  // GameManager ÂüÁ¶
+    public GameObject escMenu;  // ESC ë©”ë‰´ UI
+    public Button resumeButton; // ì´ì–´í•˜ê¸° ë²„íŠ¼
+    public Button quitButton;   // ì¢…ë£Œ ë²„íŠ¼
+    public GameManager gameManager;  // GameManager ì°¸ì¡° (nullì¼ ìˆ˜ë„ ìˆìŒ)
 
     private bool isPaused = false;
 
     void Start()
     {
-        // ÀÎ½ºÆåÅÍ¿¡¼­ GameManager°¡ ÁöÁ¤µÇÁö ¾ÊÀº °æ¿ì ÀÚµ¿À¸·Î Ã£±â
-        if (gameManager == null)
+        // escMenuê°€ nullì´ ì•„ë‹ ë•Œë§Œ ë¹„í™œì„±í™”
+        if (escMenu != null)
         {
-            gameManager = FindObjectOfType<GameManager>();
+            escMenu.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("âš ï¸ escMenuê°€ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. Unityì—ì„œ í™•ì¸í•˜ì„¸ìš”.");
         }
 
-        escMenu.SetActive(false);  // ½ÃÀÛ ½Ã ESC ¸Ş´º ºñÈ°¼ºÈ­
+        // ë²„íŠ¼ì´ nullì´ ì•„ë‹ ë•Œë§Œ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+        if (resumeButton != null)
+        {
+            resumeButton.onClick.AddListener(ResumeGame);
+        }
+        else
+        {
+            Debug.LogWarning("âš ï¸ resumeButtonì´ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+        }
 
-        // ¹öÆ° Å¬¸¯ ÀÌº¥Æ® µî·Ï
-        resumeButton.onClick.AddListener(ResumeGame);
-        quitButton.onClick.AddListener(QuitGame);
+        if (quitButton != null)
+        {
+            quitButton.onClick.AddListener(QuitGame);
+        }
+        else
+        {
+            Debug.LogWarning("âš ï¸ quitButtonì´ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+        }
     }
 
     void Update()
@@ -37,35 +54,54 @@ public class PauseMenu : MonoBehaviour
     public void TogglePauseMenu()
     {
         isPaused = !isPaused;
-        escMenu.SetActive(isPaused);
+
+        if (escMenu != null)
+        {
+            escMenu.SetActive(isPaused);
+        }
+
         Time.timeScale = isPaused ? 0 : 1;
 
-        if (isPaused)
+        // gameManagerê°€ nullì´ ì•„ë‹ ë•Œë§Œ BGM ì œì–´
+        if (gameManager != null)
         {
-            gameManager.PauseBGM();
+            if (isPaused)
+            {
+                gameManager.PauseBGM();
+            }
+            else
+            {
+                gameManager.ResumeBGM();
+            }
         }
-        else
+    }
+
+    // ì´ì–´í•˜ê¸° ë²„íŠ¼ ë™ì‘
+    public void ResumeGame()
+    {
+        isPaused = false;
+
+        if (escMenu != null)
+        {
+            escMenu.SetActive(false);
+        }
+
+        Time.timeScale = 1;
+
+        // gameManagerê°€ nullì´ ì•„ë‹ ë•Œë§Œ BGM ì œì–´
+        if (gameManager != null)
         {
             gameManager.ResumeBGM();
         }
     }
 
-    // ÀÌ¾îÇÏ±â ¹öÆ° µ¿ÀÛ
-    public void ResumeGame()
-    {
-        isPaused = false;
-        escMenu.SetActive(false);
-        Time.timeScale = 1;
-        gameManager.ResumeBGM();
-    }
-
-    // Á¾·á ¹öÆ° µ¿ÀÛ
+    // ì¢…ë£Œ ë²„íŠ¼ ë™ì‘
     public void QuitGame()
     {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;  // ¿¡µğÅÍ ¸ğµå Á¾·á
+        UnityEditor.EditorApplication.isPlaying = false;  // ì—ë””í„° ëª¨ë“œ ì¢…ë£Œ
 #else
-        Application.Quit();  // ºôµåµÈ °ÔÀÓ Á¾·á
+        Application.Quit();  // ë¹Œë“œëœ ê²Œì„ ì¢…ë£Œ
 #endif
     }
 }

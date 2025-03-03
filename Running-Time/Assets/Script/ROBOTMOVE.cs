@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class ROBOTMOVE : MonoBehaviour
 {
@@ -17,17 +17,30 @@ public class ROBOTMOVE : MonoBehaviour
     public bool isswap = false;
     public float accel = 0f;
 
-    public Transform player; // ÇÃ·¹ÀÌ¾îÀÇ TransformÀ» ÇÒ´çÇÏ¼¼¿ä.
-    public float detectionRadius = 10.0f; // ¹İ°æÀ» ¼³Á¤ÇÏ¼¼¿ä.
-    public bool isLinked = false; // ·Îº¿ ¿¬µ¿ »óÅÂ
+    public Transform player; // í”Œë ˆì´ì–´ì˜ Transformì„ í• ë‹¹í•˜ì„¸ìš”.
+    public float detectionRadius = 10.0f; // ë°˜ê²½ì„ ì„¤ì •í•˜ì„¸ìš”.
+    public bool isLinked = false; // ë¡œë´‡ ì—°ë™ ìƒíƒœ
+
+    void Awake()
+    {
+        // object1Script ìë™ í• ë‹¹
+        if (object1Script == null)
+        {
+            object1Script = FindObjectOfType<Object1Script>();
+            if (object1Script == null)
+            {
+                Debug.LogError("âš ï¸ Object1Scriptë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì”¬ì— Object1Scriptê°€ ìˆëŠ”ì§€ í™•ì¸í•˜ì„¸ìš”.");
+            }
+        }
+    }
 
     void Update()
     {
-        // ÇÃ·¹ÀÌ¾î¿Í ¿¬µ¿ ·Îº¿ °£ÀÇ °Å¸® °è»ê
+        // í”Œë ˆì´ì–´ì™€ ì—°ë™ ë¡œë´‡ ê°„ì˜ ê±°ë¦¬ ê³„ì‚°
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // ÇÃ·¹ÀÌ¾î°¡ ¹İ°æ ³»¿¡ ÀÖ´ÂÁö È®ÀÎ
-        if (distanceToPlayer <= detectionRadius && object1Script.isButtonPressed)
+        // í”Œë ˆì´ì–´ê°€ ë°˜ê²½ ë‚´ì— ìˆëŠ”ì§€ í™•ì¸
+        if (object1Script != null && distanceToPlayer <= detectionRadius && object1Script.isButtonPressed)
         {
             isLinked = true;
             // Jump
@@ -67,7 +80,7 @@ public class ROBOTMOVE : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if ((object1Script.isButtonPressed)&& (distanceToPlayer <= detectionRadius && object1Script.isButtonPressed))
+        if (object1Script != null && object1Script.isButtonPressed && distanceToPlayer <= detectionRadius)
         {
             if (Input.GetButtonDown("RUN"))
             {
@@ -113,8 +126,6 @@ public class ROBOTMOVE : MonoBehaviour
             }
         }
     }
-
-
 
     void SetSlidingCollider()
     {

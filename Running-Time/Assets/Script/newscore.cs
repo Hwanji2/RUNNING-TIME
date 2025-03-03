@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro; // TextMeshPro 추가
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,10 +12,12 @@ public class ScoreManager : MonoBehaviour
     public Text moneyPointText;
     public Text secretCountText;
     public Text recordText;
+    public TMP_Text recordTextTMP; // TextMeshPro UI 지원 추가
     public Text pressButtonText;
-    public InputField nameInputField; // 이름 입력 필드
-    public Button submitButton; // 제출 버튼
-    public AudioClip transitionClip; // 씬 전환 전에 재생할 오디오 클립
+    public InputField nameInputField;
+    public TMP_InputField nameInputFieldTMP; // TMP 입력 필드 추가
+    public Button submitButton;
+    public AudioClip transitionClip;
     public Image fadeImage;
 
     private float remainingTime;
@@ -47,15 +50,13 @@ public class ScoreManager : MonoBehaviour
         LoadRecords();
 
         // UI 업데이트
-        remainingTimeText.text ="시간" +FormatTime(remainingTime);
-        moneyPointText.text ="돈" +moneyPoint.ToString();
-        secretCountText.text = "시크릿"+secretCount.ToString();
-        recordText.text = GetRecordsText();
+        remainingTimeText.text = "시간 " + FormatTime(remainingTime);
+        moneyPointText.text = "돈 " + moneyPoint.ToString();
+        secretCountText.text = "시크릿 " + secretCount.ToString();
+        UpdateRecordText();
 
         // 시작할 때 화면을 투명하게 변환
         StartCoroutine(FadeIn());
-
-
 
         // 제출 버튼 클릭 이벤트 추가
         submitButton.onClick.AddListener(OnSubmitName);
@@ -65,7 +66,6 @@ public class ScoreManager : MonoBehaviour
     {
         if (canPressButton && Input.anyKeyDown)
         {
-            // 재생 중인 배경음악 정지
             if (audioSource.isPlaying)
             {
                 audioSource.Stop();
@@ -78,22 +78,28 @@ public class ScoreManager : MonoBehaviour
 
     void OnSubmitName()
     {
-        string playerName = nameInputField.text;
+        string playerName = nameInputField != null ? nameInputField.text : ""; // 일반 UI Text
+        if (string.IsNullOrEmpty(playerName) && nameInputFieldTMP != null)
+        {
+            playerName = nameInputFieldTMP.text; // TextMeshPro 사용 시
+        }
+
         if (!string.IsNullOrEmpty(playerName))
         {
             // 신기록 업데이트
             UpdateRecords(playerName, moneyPoint, remainingTime, secretCount);
 
             // 이름 입력 UI 숨기기
-            nameInputField.gameObject.SetActive(false);
+            if (nameInputField != null) nameInputField.gameObject.SetActive(false);
+            if (nameInputFieldTMP != null) nameInputFieldTMP.gameObject.SetActive(false);
             submitButton.gameObject.SetActive(false);
-        
+
             // 기록 UI 업데이트
-            recordText.text = GetRecordsText();
+            UpdateRecordText();
+
             // 5초 후에 "버튼을 눌러도 됩니다" 텍스트 표시
             canPressButton = true;
             StartCoroutine(ShowPressButtonText());
-           
         }
     }
 
@@ -139,19 +145,13 @@ public class ScoreManager : MonoBehaviour
         // 정렬 기준: 시크릿 → 점수 → 시간
         records.Sort((a, b) =>
         {
-            int secretComparison = b.secret.CompareTo(a.secret); // 시크릿 수로 먼저 비교
-            if (secretComparison != 0)
-            {
-                return secretComparison;
-            }
+            int secretComparison = b.secret.CompareTo(a.secret);
+            if (secretComparison != 0) return secretComparison;
 
-            int moneyComparison = b.money.CompareTo(a.money); // 점수로 비교
-            if (moneyComparison != 0)
-            {
-                return moneyComparison;
-            }
+            int moneyComparison = b.money.CompareTo(a.money);
+            if (moneyComparison != 0) return moneyComparison;
 
-            return a.time.CompareTo(b.time); // 마지막으로 시간으로 비교 (오름차순)
+            return a.time.CompareTo(b.time);
         });
 
         if (records.Count > maxRecords)
@@ -161,14 +161,17 @@ public class ScoreManager : MonoBehaviour
 
         SaveRecords();
     }
-    string GetRecordsText()
+
+    void UpdateRecordText()
     {
         string text = "< 신기록 >\n\n";
         for (int i = 0; i < records.Count; i++)
         {
             text += $"{i + 1}위 {records[i].name} - 얻은 돈: {records[i].money}, 시간: {FormatTime(records[i].time)}, 시크릿: {records[i].secret}\n";
         }
-        return text;
+
+        if (recordText != null) recordText.text = text;
+        if (recordTextTMP != null) recordTextTMP.text = text;
     }
 
     IEnumerator FadeIn()

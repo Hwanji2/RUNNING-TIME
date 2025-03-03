@@ -209,15 +209,10 @@ public class GameManager : MonoBehaviour
     {
         if (health > 1)
         {
-            health--;
-            UIhealth[health].color = new Color(1, 0, 0, 0.4f);
         }
         else
         {
-            UIhealth[0].color = new Color(1, 0, 0, 0.4f);
-            player.OnDie();
-            Debug.Log("ав╬З╫ю╢о╢ы!");
-            RestartBtn.SetActive(true);
+         
         }
     }
 
