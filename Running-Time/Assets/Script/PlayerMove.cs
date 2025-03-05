@@ -22,6 +22,7 @@ public class PlayerMove : MonoBehaviour
     public bool isDon = false;
     public bool tuto = false;
     public bool tuto2 = false;
+    public bool finish = false;
 
     public float maxSpeed;
     public float jumpPower;
@@ -34,7 +35,7 @@ public class PlayerMove : MonoBehaviour
     private bool isjump = false;
     private bool isswap = false;
 
-    Rigidbody2D rigid;
+    public Rigidbody2D rigid;
     public SpriteRenderer spriteRenderer;
     Animator anim;
     CapsuleCollider2D capsulecollider;
@@ -241,7 +242,7 @@ public class PlayerMove : MonoBehaviour
     Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C) ||
     Input.GetKeyDown(KeyCode.V) || Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown(KeyCode.N) ||
     Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.Period) ||
-    Input.GetKeyDown(KeyCode.Slash)))
+    Input.GetKeyDown(KeyCode.Slash)) || Input.GetKeyDown(KeyCode.RightShift))
         {
             if (isjump)
             {
@@ -336,6 +337,11 @@ public class PlayerMove : MonoBehaviour
         else if (collision.gameObject.tag == "tuto2")
         {
             tuto2 = true;
+            gameManager.NextStage();
+        }
+        else if (collision.gameObject.tag == "Finish")
+        {
+            finish = true;
             gameManager.NextStage();
         }
         else if (collision.gameObject.tag == "what")

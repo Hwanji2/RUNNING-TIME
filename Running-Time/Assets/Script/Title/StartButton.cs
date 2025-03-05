@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
-using TMPro;
 using System.Collections;
 
 public class VideoButtonEffect : MonoBehaviour
@@ -23,6 +22,7 @@ public class VideoButtonEffect : MonoBehaviour
     public float stretchAmount = 1.3f;
     public float moveDownAmount = 20f;
     public float animationSpeed = 0.2f;
+    public float requiredHoldTime = 0.3f; // 최소 꾹 눌러야 하는 시간 (초)
 
     [Header("🔊 효과음 설정")]
     public AudioSource audioSource;
@@ -39,6 +39,7 @@ public class VideoButtonEffect : MonoBehaviour
     private bool isBlinking = false;
     private bool isAnimating = false;
     private bool isSpacePressed = false;
+    private float spacePressStartTime = 0f; // 스페이스 키 누른 시간 저장
 
     void Start()
     {
@@ -92,19 +93,32 @@ public class VideoButtonEffect : MonoBehaviour
             }
         }
 
+        // 스페이스 키 눌렀을 때
         if (Input.GetKeyDown(KeyCode.Space) && !isSpacePressed)
         {
             isSpacePressed = true;
+            spacePressStartTime = Time.time; // 누른 시점 기록
             audioSource.PlayOneShot(pressSound);
             StopBlinking();
             StartCoroutine(AnimatePress());
         }
 
+        // 스페이스 키 뗄 때 (0.3초 이상 눌렀을 경우만 실행)
         if (Input.GetKeyUp(KeyCode.Space) && isSpacePressed)
         {
+            float heldTime = Time.time - spacePressStartTime; // 눌렀던 총 시간 계산
+
+            if (heldTime >= requiredHoldTime)
+            {
+                audioSource.PlayOneShot(releaseSound);
+                StartCoroutine(DelayedSceneLoad()); // 1초 후 씬 전환
+            }
+            else
+            {
+                Debug.Log("❌ 스페이스 키를 너무 짧게 눌렀습니다. (0.3초 이상 필요)");
+            }
+
             isSpacePressed = false;
-            audioSource.PlayOneShot(releaseSound);
-            StartCoroutine(DelayedSceneLoad()); // 1초 후 씬 전환
         }
     }
 
@@ -141,7 +155,7 @@ public class VideoButtonEffect : MonoBehaviour
 
         yield return StartCoroutine(SquishAndMoveDown());
 
-        while (!Input.GetKeyUp(KeyCode.Space))
+        while (isSpacePressed) // 스페이스 키를 누르고 있는 동안 기다림
         {
             yield return null;
         }

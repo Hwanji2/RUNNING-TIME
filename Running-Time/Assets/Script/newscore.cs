@@ -55,8 +55,6 @@ public class ScoreManager : MonoBehaviour
         secretCountText.text = "시크릿 " + secretCount.ToString();
         UpdateRecordText();
 
-        // 시작할 때 화면을 투명하게 변환
-        StartCoroutine(FadeIn());
 
         // 제출 버튼 클릭 이벤트 추가
         submitButton.onClick.AddListener(OnSubmitName);

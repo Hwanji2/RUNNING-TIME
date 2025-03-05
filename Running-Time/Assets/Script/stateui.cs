@@ -246,7 +246,6 @@ public class CombinedUI : MonoBehaviour
             isAnxious = false;
             anxiety = false;
             uiAnimator.SetBool("isAnxious", false);
-            Debug.Log("No check anxious.");
 
         }
     }
@@ -262,7 +261,6 @@ public class CombinedUI : MonoBehaviour
         else
         {
             fall = false;
-            Debug.Log("No check fall.");
 
         }
         previousYPosition = currentYPosition;

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,14 +15,14 @@ public class GameManager : MonoBehaviour
     public StageTransition tutow;
     public GameObject[] Stages;
     private bool isPulsing;
-
+    public TransitionShaderController transitionController; 
     public Image[] UIhealth;
     public Text UIPoint;
     public Text UIStage;
     public Text UITimer;
     public GameObject RestartBtn;
 
-    public float timer = 180000f; // 3ºĞ(180,000¹Ğ¸®ÃÊ)
+    public float timer = 180000f; // 3ë¶„(180,000ë°€ë¦¬ì´ˆ)
     private bool isGameOver = false;
 
     public int coffeeCount = 0;
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
        
         bgMusic = GetComponent<AudioSource>();
 
-        // ÀúÀåµÈ BGM º¼·ı ºÒ·¯¿À±â (¾øÀ¸¸é ±âº»°ª 0.8 »ç¿ë)
+        // ì €ì¥ëœ BGM ë³¼ë¥¨ ë¶ˆëŸ¬ì˜¤ê¸° (ì—†ìœ¼ë©´ ê¸°ë³¸ê°’ 0.8 ì‚¬ìš©)
         float savedBGMVolume = PlayerPrefs.GetFloat("BGMVolume", 0.8f);
         bgMusic.volume = savedBGMVolume;
         Invoke("PlayMusic", 7f);
@@ -57,19 +57,19 @@ public class GameManager : MonoBehaviour
         switch (sceneName)
         {
             case "Main":
-                timer = 180000f; // 3ºĞ
+                timer = 180000f; // 3ë¶„
                 break;
             case "HIGH":
-                timer = 540000f; // 9ºĞ
+                timer = 540000f; // 9ë¶„
                 break;
             case "Main2":
                 timer = 90000f;
                 break;
             case "Main 1":
-                timer = 0f; // 9ºĞ
+                timer = 0f; // 9ë¶„
                 break;
             default:
-                timer = 180000f; // ±âº»°ª 3ºĞ
+                timer = 180000f; // ê¸°ë³¸ê°’ 3ë¶„
                 break;
         }
     }
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeBGM()
     {
-        // ÇöÀç ½ºÅ×ÀÌÁö°¡ 3ÀÌ ¾Æ´Ñ °æ¿ì¿¡¸¸ BGM Àç»ı
+        // í˜„ì¬ ìŠ¤í…Œì´ì§€ê°€ 3ì´ ì•„ë‹Œ ê²½ìš°ì—ë§Œ BGM ì¬ìƒ
         if (stageIndex != 2 && !bgMusic.isPlaying)
         {
             bgMusic.time = pausedBGMTime;
@@ -103,11 +103,11 @@ public class GameManager : MonoBehaviour
 
             if (sceneName == "Main 1")
             {
-                timer += Time.deltaTime * 1000; // ¹Ğ¸®ÃÊ ´ÜÀ§·Î Áõ°¡
+                timer += Time.deltaTime * 1000; // ë°€ë¦¬ì´ˆ ë‹¨ìœ„ë¡œ ì¦ê°€
             }
             else
             {
-                timer -= Time.deltaTime * 1000; // ¹Ğ¸®ÃÊ ´ÜÀ§·Î °¨¼Ò
+                timer -= Time.deltaTime * 1000; // ë°€ë¦¬ì´ˆ ë‹¨ìœ„ë¡œ ê°ì†Œ
             }
 
             if (timer <= 10 && sceneName != "Main 1")
@@ -151,59 +151,81 @@ public class GameManager : MonoBehaviour
     }
     public void NextStage()
     {
-        Debug.Log("player.tuto: " + player.tuto);
-        Debug.Log("player.tuto2: " + player.tuto2);
-
-        if (stageIndex < Stages.Length - 1)
+        if (transitionController != null) // íŠ¸ëœì§€ì…˜ ì»¨íŠ¸ë¡¤ëŸ¬ê°€ ìˆëŠ” ê²½ìš°
         {
-            Stages[stageIndex].SetActive(false);
-            if (player.tuto == true)
-            {
-                Debug.Log("Entering player.tuto == true block");
-                stageIndex++;
-                stageIndex++;
-                if (bgMusic.isPlaying)
-                {
-                    pausedBGMTime = bgMusic.time;
-                    bgMusic.Pause();
-                }
-
-                Stages[stageIndex].SetActive(true);
-                PlayerReposition();
-                player.tuto = false;
-                UIStage.text = "Ã¼À°°ü";
-            }
-            else if (player.tuto2 == true)
-            {
-                Debug.Log("Entering player.tuto2 == true block");
-                stageIndex--;
-                stageIndex--;
-
-                Stages[stageIndex].SetActive(true);
-                PlayerReposition();
-                ResumeBGM();
-                player.tuto2 = false;
-                UIStage.text = "´Ù½Ã ±³¿Ü";
-            }
-            else
-            {
-                Debug.Log("Entering default block");
-                stageIndex++;
-                Stages[stageIndex].SetActive(true);
-                PlayerReposition();
-                UIStage.text = "°øÇĞ°ü";
-            }
+            StartCoroutine(TransitionAndNextStage()); // í˜ì´ë“œ ì¸ í›„ ìŠ¤í…Œì´ì§€ ë³€ê²½ ì‹¤í–‰
         }
         else
         {
-            Time.timeScale = 0;
-            Debug.Log("°ÔÀÓ Å¬¸®¾î!");
+            PerformStageChange(); // ê¸°ì¡´ ë°©ì‹ìœ¼ë¡œ ì‹¤í–‰
+        }
+    }
+
+    private IEnumerator TransitionAndNextStage()
+    {
+
+        PerformStageChange(); // ê¸°ì¡´ ìŠ¤í…Œì´ì§€ ë³€ê²½ ì½”ë“œ ì‹¤í–‰
+        transitionController.StartFadeOut(); // í˜ì´ë“œ ì¸ (í™”ë©´ ë‹«í˜)
+        yield return new WaitForSeconds(transitionController.transitionDuration); // íŠ¸ëœì§€ì…˜ì´ ëë‚  ë•Œê¹Œì§€ ëŒ€ê¸°
+
+     
+    }
+
+    private void PerformStageChange()
+    {
+        Debug.Log($"ğŸ” PerformStageChange() ì‹¤í–‰ë¨ - í˜„ì¬ stageIndex: {stageIndex}");
+        Debug.Log($"âœ… player.tuto: {player.tuto}, player.tuto2: {player.tuto2}, player.finish: {player.finish}");
+
+        Stages[stageIndex].SetActive(false);
+
+        if (player.tuto)
+        {
+            Debug.Log("ğŸ¯ player.tuto == true â†’ ì²´ìœ¡ê´€ìœ¼ë¡œ ì´ë™!");
+            stageIndex = 2;
+            if (bgMusic.isPlaying)
+            {
+                pausedBGMTime = bgMusic.time;
+                bgMusic.Pause();
+            }
+            Stages[stageIndex].SetActive(true);
+            PlayerReposition();
+            player.tuto = false;
+            UIStage.text = "ì²´ìœ¡ê´€";
+        }
+        else if (player.tuto2)
+        {
+            Debug.Log("ğŸ¯ player.tuto2 == true â†’ ë‹¤ì‹œ êµì™¸ë¡œ ì´ë™!");
+            stageIndex = 0;
+            Stages[stageIndex].SetActive(true);
+            PlayerReposition();
+            ResumeBGM();
+            player.tuto2 = false;
+            UIStage.text = "ë‹¤ì‹œ êµì™¸";
+        }
+        else if (player.finish)
+        {
+            Debug.Log("ğŸ¯ player.finish == true â†’ ê³µí•™ê´€ìœ¼ë¡œ ì´ë™!");
+            stageIndex = 1;
+            Stages[stageIndex].SetActive(true);
+            PlayerReposition();
+            UIStage.text = "ê³µí•™ê´€";
+        }
+        else
+        {
+
+            Debug.Log("ğŸ¯ player.finish == true â†’ ê³µí•™ê´€ìœ¼ë¡œ ì´ë™!");
+            stageIndex = 1;
+            Stages[stageIndex].SetActive(true);
+            PlayerReposition();
+            UIStage.text = "ê³µí•™ê´€";
         }
 
+        Time.timeScale = 1;
         totalPoint += stagePoint;
         moneyPoint = totalPoint;
         stagePoint = 0;
     }
+
 
     public void HealthDown()
     {
@@ -248,13 +270,13 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        Debug.Log("°ÔÀÓ ¿À¹ö!");
+        Debug.Log("ê²Œì„ ì˜¤ë²„!");
 
         bgMusic.Stop();
 
-        // ÀÌ¹ø ÆÇ¿¡ ¾òÀº µ·°ú ÃÑÇÕ µ·À» °¢°¢ ÀúÀå
-        PlayerPrefs.SetInt("StagePoint", stagePoint);  // ÀÌ¹ø ÆÇ¿¡ ¾òÀº µ·
-        PlayerPrefs.SetInt("TotalPoint", totalPoint);  // ÃÑÇÕ µ·
+        // ì´ë²ˆ íŒì— ì–»ì€ ëˆê³¼ ì´í•© ëˆì„ ê°ê° ì €ì¥
+        PlayerPrefs.SetInt("StagePoint", stagePoint);  // ì´ë²ˆ íŒì— ì–»ì€ ëˆ
+        PlayerPrefs.SetInt("TotalPoint", totalPoint);  // ì´í•© ëˆ
 
         PlayerPrefs.SetInt("MoneyPoint", moneyPoint);
         PlayerPrefs.SetInt("CoffeeCount", coffeeCount);
@@ -272,10 +294,10 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
 
-        // ÀÌÀü¿¡ ÀúÀåµÈ ÃÑÇÕ µ· ºÒ·¯¿À±â
+        // ì´ì „ì— ì €ì¥ëœ ì´í•© ëˆ ë¶ˆëŸ¬ì˜¤ê¸°
         totalPoint = PlayerPrefs.GetInt("TotalPoint", 0);
 
-        // ÀÌ¹ø ÆÇ¿¡ ¾òÀº µ· ÃÊ±âÈ­
+        // ì´ë²ˆ íŒì— ì–»ì€ ëˆ ì´ˆê¸°í™”
         stagePoint = 0;
 
         SceneManager.LoadScene(0);
@@ -290,7 +312,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // ±İ¾× Â÷°¨ ÇÔ¼ö Ãß°¡
+    // ê¸ˆì•¡ ì°¨ê° í•¨ìˆ˜ ì¶”ê°€
     public bool DeductMoney(int amount)
     {
         if (moneyPoint >= amount)

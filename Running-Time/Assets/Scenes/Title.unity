@@ -2411,9 +2411,10 @@ MonoBehaviour:
   stretchAmount: 1.1
   moveDownAmount: 0.1
   animationSpeed: 0.2
+  requiredHoldTime: 0.3
   audioSource: {fileID: 1017883041}
-  pressSound: {fileID: 8300000, guid: 59261afff62d78940836740a6c721da4, type: 3}
-  releaseSound: {fileID: 8300000, guid: 0e276a081e3082840a530e5aeb88f0ed, type: 3}
+  pressSound: {fileID: 8300000, guid: 08c651011d040414ba6f455db4adb103, type: 3}
+  releaseSound: {fileID: 8300000, guid: bf61902a51e5b2a419cda29187b3beb8, type: 3}
   sceneName: Main
 --- !u!114 &1017883038
 MonoBehaviour:
