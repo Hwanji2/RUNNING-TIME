@@ -9,11 +9,13 @@ public class CustomCursor : MonoBehaviour
     [Header("⚙️ 커서 위치 보정 (이미지 중심 맞추기)")]
     public Vector2 offset = Vector2.zero;
 
+    private bool cursorEnabled = true;
+
     void Start()
     {
         // 기본 마우스 커서 숨기기
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined; // 마우스를 화면 안에 제한
+        Cursor.lockState = CursorLockMode.Confined;
 
         if (cursorImage == null)
         {
@@ -23,7 +25,17 @@ public class CustomCursor : MonoBehaviour
 
     void Update()
     {
-        if (cursorImage == null)
+        // ESC 누르면 토글
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            cursorEnabled = !cursorEnabled;
+
+            // 상태에 따라 커서 표시/숨김
+            Cursor.visible = !cursorEnabled;
+            cursorImage.enabled = cursorEnabled;
+        }
+
+        if (!cursorEnabled || cursorImage == null)
             return;
 
         // 마우스 위치를 UI 좌표로 변환

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ public class PlayerMove : MonoBehaviour
     public AudioClip audioSlide;
     public AudioClip dam;
     public AudioClip audiosecret;
-    private float seVolume = 1.0f; // SE º¼·ı º¯¼ö (ÃÊ±â°ª 1.0f)
+    private float seVolume = 1.0f; // SE ë³¼ë¥¨ ë³€ìˆ˜ (ì´ˆê¸°ê°’ 1.0f)
 
     public AudioClip audioFinish;
     public int secretCount = 0;
@@ -27,7 +27,7 @@ public class PlayerMove : MonoBehaviour
     public float maxSpeed;
     public float jumpPower;
     public float accel = 1;
-    public bool running = false; // running »óÅÂ º¯¼ö
+    public bool running = false; // running ìƒíƒœ ë³€ìˆ˜
 
     private bool isInvincible = false;
     private float originalSpeed;
@@ -45,10 +45,10 @@ public class PlayerMove : MonoBehaviour
     private Vector2 originalSize;
     private Vector2 slidingSize = new Vector2(3f, 1.9f);
 
-    public GameObject afterImagePrefab; // ÀÜ»ó ¿ÀºêÁ¦ ÇÁ¸®ÆÕ
-    private float afterImageInterval = 0.1f; // ÀÜ»ó »ı¼º °£°İ
+    public GameObject afterImagePrefab; // ì”ìƒ ì˜¤ë¸Œì œ í”„ë¦¬íŒ¹
+    private float afterImageInterval = 0.1f; // ì”ìƒ ìƒì„± ê°„ê²©
     private float afterImageTimer = 0f;
-    private Vector3 previousPosition; // ÀÌÀü À§Ä¡ ÀúÀå º¯¼ö
+    private Vector3 previousPosition; // ì´ì „ ìœ„ì¹˜ ì €ì¥ ë³€ìˆ˜
 
 
 
@@ -66,8 +66,8 @@ public class PlayerMove : MonoBehaviour
         originalOffset = capsulecollider.offset;
         originalSize = capsulecollider.size;
 
-        previousPosition = transform.position; // ÃÊ±â À§Ä¡ ¼³Á¤
-                                               // ÀúÀåµÈ SE º¼·ı ºÒ·¯¿À±â
+        previousPosition = transform.position; // ì´ˆê¸° ìœ„ì¹˜ ì„¤ì •
+                                               // ì €ì¥ëœ SE ë³¼ë¥¨ ë¶ˆëŸ¬ì˜¤ê¸°
         seVolume = PlayerPrefs.GetFloat("SEVolume", 1.0f);
         audioSource.volume = seVolume;
     }
@@ -180,7 +180,7 @@ public class PlayerMove : MonoBehaviour
             anim.SetBool("isWalking", false);
         }
 
-        // Running »óÅÂ ¾÷µ¥ÀÌÆ®
+        // Running ìƒíƒœ ì—…ë°ì´íŠ¸
         running = Mathf.Abs(rigid.velocity.x) > 30;
         if (accel > 100)
         {
@@ -194,10 +194,10 @@ public class PlayerMove : MonoBehaviour
     }
     void CreateAfterImage()
     {
-        GameObject afterImage = Instantiate(afterImagePrefab, previousPosition, Quaternion.identity); // ÀÌÀü À§Ä¡¿¡ ÀÜ»ó »ı¼º
+        GameObject afterImage = Instantiate(afterImagePrefab, previousPosition, Quaternion.identity); // ì´ì „ ìœ„ì¹˜ì— ì”ìƒ ìƒì„±
         Color afterImageColor = Color.Lerp(Color.white, Color.red, (accel - 100) / 100f);
         afterImage.GetComponent<AfterImage>().Initialize(spriteRenderer.sprite, previousPosition, spriteRenderer.flipX, afterImageColor, anim);
-        previousPosition = transform.position; // ÇöÀç À§Ä¡¸¦ ÀÌÀü À§Ä¡·Î ¾÷µ¥ÀÌÆ®
+        previousPosition = transform.position; // í˜„ì¬ ìœ„ì¹˜ë¥¼ ì´ì „ ìœ„ì¹˜ë¡œ ì—…ë°ì´íŠ¸
     }
     void SetSlidingCollider()
     {
@@ -340,8 +340,8 @@ public class PlayerMove : MonoBehaviour
         }
         else if (collision.gameObject.tag == "what")
         {
-            // Æ¯Á¤ ÁÂÇ¥·Î ÀÌµ¿
-            transform.position = new Vector2(10f, 5f); // ¿øÇÏ´Â ÁÂÇ¥·Î º¯°æ
+            // íŠ¹ì • ì¢Œí‘œë¡œ ì´ë™
+            transform.position = new Vector2(10f, 5f); // ì›í•˜ëŠ” ì¢Œí‘œë¡œ ë³€ê²½
         }
     }
 
@@ -355,7 +355,7 @@ public class PlayerMove : MonoBehaviour
         bool isGold = collision.gameObject.name.Contains("Gold");
         bool isDia = collision.gameObject.name.Contains("Dia");
 
-        bool isSecret = collision.gameObject.name.Contains("½ÃÅ©¸´");
+        bool isSecret = collision.gameObject.name.Contains("ì‹œí¬ë¦¿");
 
         if (isBronze)
         {
@@ -394,7 +394,7 @@ public class PlayerMove : MonoBehaviour
         collision.gameObject.SetActive(false);
 
 
-        // 1ÃÊ ´ë±â
+        // 1ì´ˆ ëŒ€ê¸°
         yield return new WaitForSeconds(1.0f);
 
         itemEat = false;
@@ -425,17 +425,17 @@ public class PlayerMove : MonoBehaviour
         spriteRenderer.color = new Color(1, 1, 1, 0.4f);
 
         // Reaction Force
-        int dirc = spriteRenderer.flipX ? 0 : -1; // ÇÃ·¹ÀÌ¾î°¡ ÇâÇÏ°í ÀÖ´Â ¹æÇâÀÇ ¹İ´ë ¹æÇâÀ¸·Î ¼³Á¤
+        int dirc = spriteRenderer.flipX ? 0 : -1; // í”Œë ˆì´ì–´ê°€ í–¥í•˜ê³  ìˆëŠ” ë°©í–¥ì˜ ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ì„¤ì •
 
         // Animation
         isswap = true;
-        float direction = spriteRenderer.flipX ? -1f : 1f; // ÇÃ·¹ÀÌ¾îÀÇ ¹æÇâ È®ÀÎ
+        float direction = spriteRenderer.flipX ? -1f : 1f; // í”Œë ˆì´ì–´ì˜ ë°©í–¥ í™•ì¸
 
-        // Rigidbody2D ÄÄÆ÷³ÍÆ® ÂüÁ¶
+        // Rigidbody2D ì»´í¬ë„ŒíŠ¸ ì°¸ì¡°
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null&&!(accel==0))
         {
-            rb.AddForce(new Vector2(-20f * direction, 10f), ForceMode2D.Impulse); // ¹æÇâ¿¡ µû¶ó ÈûÀ» Ãß°¡
+            rb.AddForce(new Vector2(-20f * direction, 10f), ForceMode2D.Impulse); // ë°©í–¥ì— ë”°ë¼ í˜ì„ ì¶”ê°€
         }
 
         anim.SetTrigger("doDamaged");
@@ -482,49 +482,70 @@ public class PlayerMove : MonoBehaviour
     {
         jumpPower = newJumpPower;
     }
-
     void PlaySound(string action)
     {
+        AudioClip clipToPlay = null;
+        bool allowOverlap = true; // ê¸°ë³¸ê°’: ì¤‘ì²© í—ˆìš©
+
         switch (action)
         {
             case "JUMP":
-                audioSource.clip = audioJump;
+                clipToPlay = audioJump;
+                allowOverlap = false;
                 break;
             case "ATTACK":
-                audioSource.clip = audioAttack;
+                clipToPlay = audioAttack;
+                allowOverlap = false;
                 break;
             case "DAMAGED":
-                audioSource.clip = audioDamaged;
+                clipToPlay = audioDamaged;
                 break;
             case "ITEM":
-                audioSource.clip = audioItem;
+                clipToPlay = audioItem;
+                allowOverlap = false;
                 break;
             case "DIE":
-                audioSource.clip = audioDie;
+                clipToPlay = audioDie;
                 break;
             case "FINISH":
-                audioSource.clip = audioFinish;
+                clipToPlay = audioFinish;
                 break;
             case "dam":
-                audioSource.clip = dam;
+                clipToPlay = dam;
+                allowOverlap = false;
                 break;
             case "slide":
-                audioSource.clip = audioSlide;
+                clipToPlay = audioSlide;
+                allowOverlap = false;
                 break;
             case "secret":
-                audioSource.clip = audiosecret;
+                clipToPlay = audiosecret;
                 break;
         }
 
-        audioSource.volume = seVolume; // SE º¼·ı Àû¿ë
-        audioSource.Play();
+        if (clipToPlay == null) return;
+
+        // âœ… ì¤‘ì²© ì—¬ë¶€ì— ë”°ë¼ ì¬ìƒ ë°©ì‹ ë¶„ê¸°
+        if (allowOverlap)
+        {
+            audioSource.PlayOneShot(clipToPlay, seVolume);
+        }
+        else
+        {
+            // ì´ë¯¸ ê°™ì€ ì‚¬ìš´ë“œê°€ ì¬ìƒ ì¤‘ì´ë©´ ìƒˆë¡œ ì¬ìƒ ì•ˆ í•¨
+            if (audioSource.isPlaying && audioSource.clip == clipToPlay) return;
+
+            audioSource.clip = clipToPlay;
+            audioSource.volume = seVolume;
+            audioSource.Play();
+        }
     }
 
-    // SE º¼·ı ¼³Á¤ ¸Ş¼­µå
     public void SetSEVolume(float volume)
     {
         seVolume = volume;
         audioSource.volume = seVolume;
-        PlayerPrefs.SetFloat("SEVolume", seVolume); // SE º¼·ı ÀúÀå
+        PlayerPrefs.SetFloat("SEVolume", seVolume); // SE ë³¼ë¥¨ ì €ì¥
     }
+
 }
