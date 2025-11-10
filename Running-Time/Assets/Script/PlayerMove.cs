@@ -236,13 +236,7 @@ public class PlayerMove : MonoBehaviour
             anim.SetBool("Run one", false);
 
         }
-        if (Input.GetButtonDown("RUN")|| (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) ||
-    Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.H) ||
-    Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L) ||
-    Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C) ||
-    Input.GetKeyDown(KeyCode.V) || Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown(KeyCode.N) ||
-    Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.Period) ||
-    Input.GetKeyDown(KeyCode.Slash)) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetButtonDown("RUN") || Input.anyKeyDown)
         {
             if (isjump)
             {

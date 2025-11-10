@@ -105,6 +105,10 @@ public class GameManager : MonoBehaviour
             {
                 timer += Time.deltaTime * 1000; // 밀리초 단위로 증가
             }
+            else if (sceneName == "아이디어")
+            {
+               
+            }
             else
             {
                 timer -= Time.deltaTime * 1000; // 밀리초 단위로 감소

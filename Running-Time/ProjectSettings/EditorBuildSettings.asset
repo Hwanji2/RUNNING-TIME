@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Notion.unity
+    guid: a72157d3da863c54994c736d589ef29b
+  - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: 9190fb9bcee4f284c8cae03673924a80
   - enabled: 1
